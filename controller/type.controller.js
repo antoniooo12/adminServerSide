@@ -11,11 +11,15 @@ class TypeController {
     }
 
     async bulkCreate(req, res) {
-        const {oldCategoriesToDel, newCategories} = req.body
-        const resDelete = Category.destroy({where: {id: oldCategoriesToDel}})
+        const {oldCategoriesToDel, newCategories, oldItemsToUpdate} = req.body
         const typesResponse = await Category.bulkCreate(newCategories, {
             fields: ['category']
         })
+        console.log(oldItemsToUpdate)
+        const resUpdate = await Category.bulkCreate(oldItemsToUpdate, {
+            updateOnDuplicate: ['category', 'id']
+        })
+        const resDelete = Category.destroy({where: {id: oldCategoriesToDel}})
         return res.json(typesResponse)
     }
 

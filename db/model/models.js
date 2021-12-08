@@ -15,10 +15,11 @@ const User = sequelize.define('user', {
 })
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: DataTypes.STRING, unique: true},
+    productName: {type: DataTypes.STRING, unique: true},
     unit: {type: DataTypes.STRING},
-    actual: {type: DataTypes.BOOLEAN, defaultValue: true},
+    actual: {type: DataTypes.BOOLEAN, defaultValue: false},
     price: {type: DataTypes.DECIMAL(10, 2)},
+    priority: {type: DataTypes.DECIMAL(10, 0)},
     image: {type: DataTypes.STRING, defaultValue: ''},
 }, {
     charset: "utf8mb4",
@@ -84,11 +85,11 @@ OrderProduct.belongsTo(OrderProductList)
 Product.hasMany(OrderProduct)
 OrderProduct.belongsTo(Product)
 
-Category.hasMany(Product)
-Product.belongsTo(Category)
+Subcategory.hasMany(Product)
+Product.belongsTo(Subcategory)
 
-Subcategory.hasMany(Category)
-Category.belongsTo(Subcategory)
+Category.hasMany(Subcategory)
+Subcategory.belongsTo(Category)
 
 module.exports = {
     User,
