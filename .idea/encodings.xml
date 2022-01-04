@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/files/demo2.csv" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/files/test1.csv" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/tsconfig.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/types/TableTypes.ts" charset="UTF-8" />
     <file url="PROJECT" charset="windows-1251" />
   </component>
 </project>

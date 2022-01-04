@@ -1,25 +1,25 @@
 const uuid = require('uuid')
 const config = require('config')
 const path = require('path')
-const {Category, Subcategory} = require("../db/model/models");
+// const {Category, Subcategory} = require("../db/model/models");
 const {Product} = require('../db/model/models')
 const pool = require('../db/db')
 
 class ProductController {
     async bulkCreate(req, res) {
         const {oldItemsToDel, newItems, oldItemsToUpdate} = req.body
-        console.log(newItems)
+        console.log(req.body)
 
         const dbRes = await Product.bulkCreate(newItems, {
             fields: ['productName', 'subcategoryId', 'unit', 'price']
         })
 
         // console.log(oldItemsToUpdate)
-        // const resUpdate = await Product.bulkCreate(oldItemsToUpdate, {
-        //     updateOnDuplicate: ['subcategory', 'categoryId', 'id']
-        // })
+        const resUpdate = await Product.bulkCreate(oldItemsToUpdate, {
+            updateOnDuplicate: ['subcategory', 'categoryId', 'id', 'productName', 'price']
+        })
 
-        // const dbResDestroy = await Product.destroy({where: {id: oldItemsToDel}})
+        const dbResDestroy = await Product.destroy({where: {id: oldItemsToDel}})
         console.log()
         return res.json()
     }

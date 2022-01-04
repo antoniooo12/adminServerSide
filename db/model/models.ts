@@ -13,6 +13,7 @@ const User = sequelize.define('user', {
     charset: "utf8mb4",
     collate: "utf8mb4_general_ci",
 })
+
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     productName: {type: DataTypes.STRING, unique: true},
@@ -28,20 +29,12 @@ const Product = sequelize.define('product', {
 
 const Category = sequelize.define('category', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    category: {type: DataTypes.STRING, unique: true, allowNull: false}
-}, {
-    createdAt: false, updatedAt: false,
-    charset: "utf8mb4",
-    collate: "utf8mb4_general_ci",
+    value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 
 const Subcategory = sequelize.define('subcategory', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    subcategory: {type: DataTypes.STRING, unique: true, allowNull: false}
-}, {
-    createdAt: false, updatedAt: false,
-    charset: "utf8mb4",
-    collate: "utf8mb4_general_ci",
+    value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 const Basket = sequelize.define('basket', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -91,7 +84,8 @@ Product.belongsTo(Subcategory)
 Category.hasMany(Subcategory)
 Subcategory.belongsTo(Category)
 
-module.exports = {
+
+export {
     User,
     Product,
     Category,

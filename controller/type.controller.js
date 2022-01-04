@@ -1,5 +1,6 @@
-const {Category} = require('../db/model/models')
-const db = require('../db/db')
+// const {Category} = require('../db/model/models')
+const pool = require("../db/db");
+
 
 class TypeController {
     ///gently
@@ -11,16 +12,20 @@ class TypeController {
     }
 
     async bulkCreate(req, res) {
-        const {oldCategoriesToDel, newCategories, oldItemsToUpdate} = req.body
-        const typesResponse = await Category.bulkCreate(newCategories, {
-            fields: ['category']
-        })
-        console.log(oldItemsToUpdate)
-        const resUpdate = await Category.bulkCreate(oldItemsToUpdate, {
-            updateOnDuplicate: ['category', 'id']
-        })
-        const resDelete = Category.destroy({where: {id: oldCategoriesToDel}})
-        return res.json(typesResponse)
+        console.log(req.body)
+        // const {oldCategoriesToDel, newCategories, oldItemsToUpdate} = req.body
+        // const typesResponse = await Category.bulkCreate(newCategories, {
+        //     fields: ['category']
+        // })
+        // console.log(newCategories)
+        // const resUpdate = await Category.bulkCreate(oldItemsToUpdate, {
+        //     updateOnDuplicate: ['category', 'id']
+        // })
+        // if(oldCategoriesToDel.length>0){
+        //     const resDelete = Category.destroy({where: {id: oldCategoriesToDel}})
+        // }
+        // console.log(typesResponse)
+        return res.json('str')
     }
 
     ///gently
@@ -36,7 +41,9 @@ class TypeController {
     }
 
     async getAll(req, res) {
-        const types = await Category.findAll()
+        const types = await pool.execute(`select id, category
+                                          from categories`)
+        console.log(types)
         return res.json(types)
     }
 }

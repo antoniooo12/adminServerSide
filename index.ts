@@ -1,5 +1,6 @@
 const express = require('express')
-const config = require('config')
+import config = require('config')
+
 const {Sequelize} = require('sequelize')
 const PORT = config.get('serverPort') || 4200
 const fileUpload = require("express-fileupload")
@@ -10,7 +11,6 @@ const sequelize = require('./db/dbSequelize')
 
 const fileRouter = require('./routes/fileRouter.routes')
 const productRouter = require('./routes/productRouter.routes')
-const {Subcategory, Product} = require("./db/model/models");
 
 const app = express()
 
@@ -35,7 +35,7 @@ app.use('/api/goods', productRouter)
 const start = async () => {
     try {
         await sequelize.authenticate()
-        await sequelize.sync()
+        await sequelize.sync({force: true})
         console.log('Соединение с БД было успешно установлено')
         app.listen(PORT, () =>
             console.log(`server run on ${PORT}  `)

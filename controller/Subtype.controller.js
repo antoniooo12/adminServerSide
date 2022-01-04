@@ -1,4 +1,4 @@
-const {Subcategory} = require("../db/model/models");
+// const {Subcategory} = require("../db/model/models");
 const pool = require("../db/db");
 
 class SubtypeController {

@@ -1,11 +1,11 @@
 const db = require('../db/db')
 const {Sequelize} = require("sequelize");
 const {Product} = require("../db/model/models");
-const {OrderProduct} = require("../db/model/models");
-const {OrderProductList} = require("../db/model/models");
-const {Order} = require("../db/model/models");
-const {Basket} = require("../db/model/models");
-const {User} = require("../db/model/models");
+// const {OrderProduct} = require("../db/model/models");
+// // const {OrderProductList} = require("../db/model/models");
+// const {Order} = require("../db/model/models");
+// const {Basket} = require("../db/model/models");
+// const {User} = require("../db/model/models");
 
 
 class ClientController {
