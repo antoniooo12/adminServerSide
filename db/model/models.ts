@@ -16,8 +16,8 @@ const User = sequelize.define('user', {
 
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    productName: {type: DataTypes.STRING, unique: true},
-    unit: {type: DataTypes.STRING},
+    product: {type: DataTypes.STRING, unique: true},
+    typeOfProduct: {type: DataTypes.STRING},
     actual: {type: DataTypes.BOOLEAN, defaultValue: false},
     price: {type: DataTypes.DECIMAL(10, 2)},
     priority: {type: DataTypes.DECIMAL(10, 0)},
@@ -29,12 +29,12 @@ const Product = sequelize.define('product', {
 
 const Category = sequelize.define('category', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    value: {type: DataTypes.STRING, unique: true, allowNull: false}
+    category: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 
 const Subcategory = sequelize.define('subcategory', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    value: {type: DataTypes.STRING, unique: true, allowNull: false}
+    subcategory: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 const Basket = sequelize.define('basket', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
