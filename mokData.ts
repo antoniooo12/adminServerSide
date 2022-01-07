@@ -2,13 +2,13 @@ import {EnumInput, EnumStyles, TableCreator} from "./types/TableTypes";
 
 
 export const TableCreatorMokData: TableCreator = {
-    categories: {
+    Category: {
         dependency: [],
         title: 'категорія',
         column: [{width: 150}],
         header: [{title: 'Категорія'}],
         row: [{
-            typeColumn: "categories",
+            typeColumn: "Category",
             isDropDownList: false,
             typeInput: EnumInput.text,
             placeholder: 'категорія',
@@ -16,21 +16,21 @@ export const TableCreatorMokData: TableCreator = {
         }]
     },
 
-    subCategories: {
-        dependency: ["categories"],
+    Subcategory: {
+        dependency: ["Category"],
         title: 'підкатегорія',
         column: [{width: 150}, {width: 150}],
         header: [{title: 'Підкатегорія'}, {title: 'Категорія'}],
         row: [
             {
-                typeColumn: "subCategories",
+                typeColumn: "Subcategory",
                 isDropDownList: false,
                 typeInput: EnumInput.text,
                 placeholder: 'підкатегорія',
                 isMother: true
             },
             {
-                typeColumn: "categories",
+                typeColumn: "Category",
                 isDropDownList: true,
                 typeInput: EnumInput.text,
                 placeholder: 'категорія',
@@ -38,8 +38,8 @@ export const TableCreatorMokData: TableCreator = {
             }
         ]
     },
-    products: {
-        dependency: ["categories", 'subCategories'],
+    Product: {
+        dependency: ['Subcategory'],
         title: 'продукти',
         column: [{width: 150}, {width: 150}, {width: 150}, {width: 70}, {width: 70}, {width: 80}, {width: 70}],
         header: [{title: 'Продукти'}, {title: 'Категорія'}, {title: 'Підкатегорія'}, {title: 'Ціна'}, {
@@ -54,23 +54,23 @@ export const TableCreatorMokData: TableCreator = {
         },],
         row: [
             {
-                typeColumn: "products",
+                typeColumn: "Product",
                 isDropDownList: false,
                 typeInput: EnumInput.text,
                 placeholder: 'назва продукта',
                 isMother: true
             },
             {
-                typeColumn: "categories",
+                typeColumn: "Category",
                 isDropDownList: true,
                 typeInput: EnumInput.text,
                 placeholder: 'категорія',
                 isMother: false
             },
             {
-                typeColumn: "subCategories",
+                typeColumn: "Subcategory",
                 isDropDownList: true,
-                filterByColumn: "categories",
+                filterByColumn: "Category",
                 typeInput: EnumInput.text,
                 placeholder: 'підкатегорія',
                 isMother: false
@@ -90,27 +90,28 @@ export const TableCreatorMokData: TableCreator = {
                 isMother: false,
             },
             {
-                typeColumn: 'typesOfProducts',
+                typeColumn: 'TypeOfProduct',
                 style: [EnumStyles.fontSizeSmall],
                 isDropDownList: false,
                 typeInput: EnumInput.select,
             },
             {
+                defaultState: true,
                 typeColumn: "actual",
                 isDropDownList: false,
                 typeInput: EnumInput.checkbox,
-                placeholder: 'актуальність',
+                placeholder: 'продається',
                 style: [EnumStyles.toggleButton],
             },
         ]
     },
-    typesOfProducts: {
+    TypeOfProduct: {
         dependency: [],
         title: 'тип продуткти',
         column: [{width: 150}],
         header: [{title: 'Категорія'}],
         row: [{
-            typeColumn: "typesOfProducts",
+            typeColumn: "TypeOfProduct",
             isDropDownList: false,
             typeInput: EnumInput.text,
             placeholder: 'тип продуткти',

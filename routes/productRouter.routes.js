@@ -1,9 +1,9 @@
 const Router = require('express')
 const router = new Router()
-const table = require('../controller/table.controller')
+const {TableController} = require('../controller/tableController/table.controller')
 
-
-router.post('/table', table.bulkSave)
-router.get('/table', table.getAllRowsByTableName)
+const tableController = new TableController()
+router.post('/table', tableController.bulkSave)
+router.get('/table', tableController.getAllRowsByTableNameSequelize)
 
 module.exports = router

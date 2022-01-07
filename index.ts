@@ -34,14 +34,17 @@ app.use('/api/files', fileRouter)
 app.use('/api/goods', productRouter)
 
 
+
 const start = async () => {
     try {
         await sequelize.authenticate()
         await sequelize.sync()
         console.log('Соединение с БД было успешно установлено')
-        app.listen(PORT, () =>
+        app.listen(PORT, () => {
+
             console.log(`server run on ${PORT}  `)
-        )
+        })
+
     } catch (e) {
         console.log(e)
         console.log('Невозможно выполнить подключение к БД: ', e)
@@ -49,3 +52,9 @@ const start = async () => {
 }
 
 start()
+
+module.exports = app
+
+
+
+
