@@ -43,9 +43,11 @@ class TableController {
         }: { behavior: TypeTable, allToDelete: Array<RowItem>, newToServer: Array<RowItem>, allToUpdate: Array<RowItem> } = req.body
 
         const chosenModel = models[behavior]
+        console.log(newToServer)
+        const newToDb = newToServer.map(line => {
 
-        const newToDb = newToServer.map(row => {
-            return row.columns.reduce(function (accumulator, column: Item) {
+            return Object.keys(line).reduce((accumulator, key) => {
+                const column = line[key]
                 if (column.id) {
                     if (typeof column.id === 'boolean') {
                         throw new Error('typeof column.id !== \'string\'')
@@ -57,48 +59,48 @@ class TableController {
                 return accumulator
             }, {})
         })
-
-        const resDb = await chosenModel.bulkCreate(newToDb)
-        return res.json(resDb)
+        console.log(newToDb)
+        // const resDb = await chosenModel.bulkCreate(newToDb)
+        return res.json('resDb')
     }
 
     async getAllRowsByTableNameSequelize(req, res) {
-        const {typeTable} = req.query
-        // const typeTable = 'Product'
-        const chosenModel = models[typeTable] as ModelDefined<Model, TypeTable>
-        const DependenciesTable = TableCreatorMokData[typeTable].dependency
-        const includes = DependenciesTable.map(table => {
-            return {
-                model: models[table],
+        // const {typeTable} = req.query
+        // // const typeTable = 'Product'
+        // const chosenModel = models[typeTable] as ModelDefined<Model, TypeTable>
+        // const DependenciesTable = TableCreatorMokData[typeTable].dependency
+        // const includes = DependenciesTable.map(table => {
+        //     return {
+        //         model: models[table],
+        //
+        //         required: true,
+        //         attributes: {exclude: ['createdAt', 'updatedAt']},
+        //     }
+        // })
+        // const resDb = await chosenModel.findAll<typeof typeTable>({
+        //     attributes: {exclude: ['createdAt', 'updatedAt']},
+        //
+        //     include: [{
+        //         model: Subcategory,
+        //         attributes: {exclude: ['createdAt', 'updatedAt']},
+        //         include: [{
+        //             model: Category,
+        //             attributes: {exclude: ['createdAt', 'updatedAt']},
+        //         }],
+        //     }, {
+        //         model: TypeOfProduct,
+        //         attributes: {exclude: ['createdAt', 'updatedAt']},
+        //     }]
+        // })
+        // console.log(resDb)
+        // const toApp: Item[][] = resDb.map(function (resDbItem) {
+        //     const rowDb = resDbItem.dataValues
+        //     const rowObj = parseObject(rowDb, typeTable)
+        //     return rowObj
+        // }, {})
+        // console.log(toApp)
 
-                required: true,
-                attributes: {exclude: ['createdAt', 'updatedAt']},
-            }
-        })
-        const resDb = await chosenModel.findAll<typeof typeTable>({
-            attributes: {exclude: ['createdAt', 'updatedAt']},
-
-            include: [{
-                model: Subcategory,
-                attributes: {exclude: ['createdAt', 'updatedAt']},
-                include: [{
-                    model: Category,
-                    attributes: {exclude: ['createdAt', 'updatedAt']},
-                }],
-            }, {
-                model: TypeOfProduct,
-                attributes: {exclude: ['createdAt', 'updatedAt']},
-            }]
-        })
-        console.log(resDb)
-        const toApp: Item[][] = resDb.map(function (resDbItem) {
-            const rowDb = resDbItem.dataValues
-            const rowObj = parseObject(rowDb, typeTable)
-            return rowObj
-        }, {})
-        console.log(toApp)
-
-        return res.json(toApp)
+        return res.json('toApp')
     }
 }
 
