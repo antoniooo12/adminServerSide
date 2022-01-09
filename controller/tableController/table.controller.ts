@@ -1,10 +1,12 @@
 import {Item, RowItem, TableCreator, TypeTable} from "../../types/TableTypes";
-import {separateString} from "../../services/hellpers";
+import {getNumber, separateString} from "../../services/hellpers";
 
 const _ = require('lodash');
 import * as models from '../../db/model/models'
 import {TableCreatorMokData} from "../../mokData";
 import {parseObject} from "../../hellpers/hellpers";
+import {IncludeOptions, Model, ModelDefined} from "sequelize";
+import {Category, Subcategory, TypeOfProduct} from "../../db/model/models";
 
 const uuid = require('uuid')
 const config = require('config')
@@ -45,7 +47,10 @@ class TableController {
         const newToDb = newToServer.map(row => {
             return row.columns.reduce(function (accumulator, column: Item) {
                 if (column.id) {
-                    accumulator[TableNameToTableId[column.typeColumn]] = Number(1)
+                    if (typeof column.id === 'boolean') {
+                        throw new Error('typeof column.id !== \'string\'')
+                    }
+                    accumulator[TableNameToTableId[column.typeColumn]] = column.id
                 } else {
                     accumulator['value'] = separateString(column.value, ':')
                 }
@@ -60,25 +65,39 @@ class TableController {
     async getAllRowsByTableNameSequelize(req, res) {
         const {typeTable} = req.query
         // const typeTable = 'Product'
-        const chosenModel = models[typeTable]
+        const chosenModel = models[typeTable] as ModelDefined<Model, TypeTable>
         const DependenciesTable = TableCreatorMokData[typeTable].dependency
         const includes = DependenciesTable.map(table => {
             return {
                 model: models[table],
+
                 required: true,
                 attributes: {exclude: ['createdAt', 'updatedAt']},
             }
         })
-        const resDb = await chosenModel.findAll({
+        const resDb = await chosenModel.findAll<typeof typeTable>({
             attributes: {exclude: ['createdAt', 'updatedAt']},
-            include: includes
+
+            include: [{
+                model: Subcategory,
+                attributes: {exclude: ['createdAt', 'updatedAt']},
+                include: [{
+                    model: Category,
+                    attributes: {exclude: ['createdAt', 'updatedAt']},
+                }],
+            }, {
+                model: TypeOfProduct,
+                attributes: {exclude: ['createdAt', 'updatedAt']},
+            }]
         })
         console.log(resDb)
-        const toApp: Array<Item> = resDb.map(function (resDbItem) {
+        const toApp: Item[][] = resDb.map(function (resDbItem) {
             const rowDb = resDbItem.dataValues
             const rowObj = parseObject(rowDb, typeTable)
             return rowObj
         }, {})
+        console.log(toApp)
+
         return res.json(toApp)
     }
 }

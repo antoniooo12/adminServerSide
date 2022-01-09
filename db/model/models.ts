@@ -17,7 +17,6 @@ const User = sequelize.define('user', {
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     value: {type: DataTypes.STRING, unique: true},
-    typeOfProduct: {type: DataTypes.STRING},
     actual: {type: DataTypes.BOOLEAN, defaultValue: false},
     price: {type: DataTypes.DECIMAL(10, 2)},
     priority: {type: DataTypes.DECIMAL(10, 0)},
@@ -28,6 +27,11 @@ const Product = sequelize.define('product', {
 })
 
 const Category = sequelize.define('category', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    value: {type: DataTypes.STRING, unique: true, allowNull: false}
+})
+
+const TypeOfProduct = sequelize.define('typeofproduct', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
@@ -78,12 +82,19 @@ OrderProduct.belongsTo(OrderProductList)
 Product.hasMany(OrderProduct)
 OrderProduct.belongsTo(Product)
 
+TypeOfProduct.hasMany(Product)
+// Product.belongsTo(TypeOfProduct)
+
 Subcategory.hasMany(Product)
 Product.belongsTo(Subcategory)
 
 Category.hasMany(Subcategory)
 Subcategory.belongsTo(Category)
 
+
+
+TypeOfProduct.hasMany(Product)
+Product.belongsTo(TypeOfProduct)
 
 export {
     User,
@@ -94,4 +105,5 @@ export {
     OrderProduct,
     OrderProductList,
     Subcategory,
+    TypeOfProduct,
 }
