@@ -37,43 +37,6 @@ export function parseObject(rowDb, nameColumn) {
         })
     }
 
-    // function aFN(rowDb, nameColumn) {
-    //     return Object.keys(rowDb).reduce((accumulator, key, index) => {
-    //         const item = rowDb[key]
-    //         if (!_.isObject(item)) {
-    //             if (counter === 0) {
-    //                 if (index === 0) {
-    //                     object[counter] = {}
-    //                     object[counter]['typeColumn'] = nameColumn
-    //                 }
-    //                 if (key.includes('Id')) {
-    //                     object[counter]['dependencyId'] = rowDb[key]
-    //                 } else {
-    //                     object[counter][key] = rowDb[key]
-    //                 }
-    //             } else {
-    //                 if (index === 0) {
-    //                     accumulator['typeColumn'] = nameColumn
-    //                 }
-    //                 if (key.includes('Id')) {
-    //                     accumulator['dependencyId'] = rowDb[key]
-    //                 } else {
-    //                     accumulator[key] = rowDb[key]
-    //                 }
-    //             }
-    //
-    //
-    //         } else if (_.isObject(item)) {
-    //             counter++
-    //             const newItem = item.dataValues
-    //             object[counter] = aFN(newItem, capitalize(key))
-    //         }
-    //         return accumulator
-    //     }, {})
-    // }
-    //
-    //
-    // const parsedRowsObj = aFN(rowDb, nameColumn)
     const parsedRowsArr: Array<Item> = Object.keys(object).reduce((array, key) => {
         array.push(object[key])
         return array
