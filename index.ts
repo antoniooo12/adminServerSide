@@ -1,4 +1,4 @@
-import {Product} from "./db/model/models";
+import {Product, TypeOfProduct} from "./db/model/models";
 
 const express = require('express')
 import config = require('config')

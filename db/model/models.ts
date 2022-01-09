@@ -31,7 +31,7 @@ const Category = sequelize.define('category', {
     value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 
-const TypeOfProduct = sequelize.define('typeofproduct', {
+const TypeOfProduct = sequelize.define('TypeOfProduct', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
