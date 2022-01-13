@@ -4,7 +4,8 @@ import * as models from '../../db/model/models'
 import {Category, Subcategory, TypeOfProduct} from '../../db/model/models'
 import {TableCreatorMokData} from "../../mokData";
 import {capitalize, parseObject} from "../../hellpers/hellpers";
-import {Model, ModelDefined} from "sequelize";
+import {Filterable, Model, ModelDefined} from "sequelize";
+import any = jasmine.any;
 
 const _ = require('lodash');
 
@@ -40,11 +41,11 @@ class TableController {
             allToDelete,
             newToServer,
             allToUpdate
-        }: { behavior: TypeTable, allToDelete: Array<RowItem>, newToServer: Array<RowItem>, allToUpdate: Array<RowItem> } = req.body
+        }: { behavior: TypeTable, allToDelete: [], newToServer: Array<RowItem>, allToUpdate: Array<RowItem> } = req.body
 
-        const chosenModel = models[behavior]
-        const newToDb = newToServer.map(line => {
+        const chosenModel = models[behavior] as ModelDefined<Model, TypeTable>
 
+        const newToDb: Array<any> = newToServer.map(line => {
             return Object.keys(line).reduce((accumulator, key) => {
                 const column = line[key]
                 if (column.id) {
@@ -58,7 +59,11 @@ class TableController {
                 return accumulator
             }, {})
         })
+        console.log(newToDb)
+
         const resDb = await chosenModel.bulkCreate(newToDb)
+        const where: Filterable & { id: [] } = {id: allToDelete}
+        const resDbDelete = await chosenModel.destroy({where: where})
         return res.json('resDb')
     }
 
