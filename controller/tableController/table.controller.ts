@@ -1,11 +1,10 @@
 import {DependencyTree, Item, RowItem, TypeTable} from "../../types/TableTypes";
 import {separateString} from "../../services/hellpers";
 import * as models from '../../db/model/models'
-import {Category, Subcategory, TypeOfProduct} from '../../db/model/models'
+import {Category, Subcategory} from '../../db/model/models'
 import {TableCreatorMokData} from "../../mokData";
-import {capitalize, parseObject} from "../../hellpers/hellpers";
-import {Filterable, Model, ModelDefined} from "sequelize";
-import any = jasmine.any;
+import {parseObject} from "../../hellpers/hellpers";
+import {Model, ModelDefined} from "sequelize";
 
 const _ = require('lodash');
 
@@ -53,17 +52,20 @@ class TableController {
                         throw new Error('typeof column.id !== \'string\'')
                     }
                     accumulator[TableNameToTableId[column.typeColumn]] = column.id
-                } else {
+                } else if (behavior === column.typeColumn) {
                     accumulator['value'] = separateString(column.value, ':')
+                } else if (column.typeColumn !== undefined) {
+                    accumulator[column.typeColumn] = column.value
                 }
                 return accumulator
             }, {})
         })
-        console.log(newToDb)
+        console.log(newToServer)
 
-        const resDb = await chosenModel.bulkCreate(newToDb)
-        const where: Filterable & { id: [] } = {id: allToDelete}
-        const resDbDelete = await chosenModel.destroy({where: where})
+        console.log(newToDb)
+        // const resDb = await chosenModel.bulkCreate(newToDb)
+        // const where: Filterable & { id: [] } = {id: allToDelete}
+        // const resDbDelete = await chosenModel.destroy({where: where})
         return res.json('resDb')
     }
 

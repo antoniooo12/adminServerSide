@@ -3,7 +3,6 @@ import {Product, TypeOfProduct} from "./db/model/models";
 const express = require('express')
 import config = require('config')
 
-const {Sequelize} = require('sequelize')
 const PORT = config.get('serverPort') || 4200
 const fileUpload = require("express-fileupload")
 const xlsx = require('xlsx')
