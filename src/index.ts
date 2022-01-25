@@ -1,16 +1,16 @@
+import {Product, TypeOfProduct} from "./db/model/models";
+
 const express = require('express')
-const config = require('config')
-const {Sequelize} = require('sequelize')
+
+import config = require('config')
+
 const PORT = config.get('serverPort') || 4200
 const fileUpload = require("express-fileupload")
-const xlsx = require('xlsx')
 const cors = require('cors')
 const path = require('path')
 const sequelize = require('./db/dbSequelize')
 
-const fileRouter = require('./routes/fileRouter.routes')
-const productRouter = require('./routes/productRouter.routes')
-const {Subcategory, Product} = require("./db/model/models");
+import {productRouter} from './routes/productRouter.routes'
 
 const app = express()
 
@@ -28,18 +28,20 @@ app.use(fileUpload({}))
 app.use(express.static(__dirname))
 app.use(express.static(path.resolve(__dirname, 'build')))
 
-app.use('/api/files', fileRouter)
 app.use('/api/goods', productRouter)
+
 
 
 const start = async () => {
     try {
         await sequelize.authenticate()
-        await sequelize.sync()
+        await sequelize.sync({force: true})
         console.log('Соединение с БД было успешно установлено')
-        app.listen(PORT, () =>
+        app.listen(PORT, () => {
+
             console.log(`server run on ${PORT}  `)
-        )
+        })
+
     } catch (e) {
         console.log(e)
         console.log('Невозможно выполнить подключение к БД: ', e)
@@ -47,3 +49,9 @@ const start = async () => {
 }
 
 start()
+
+module.exports = app
+
+
+
+

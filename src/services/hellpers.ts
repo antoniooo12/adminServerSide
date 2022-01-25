@@ -1,10 +1,10 @@
-export function capitalizeFirstLetter(string) {
+export function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function separateString(string: any, separator: string): string[] {
+export function separateString(string: any, separator: string, index: number): string {
     if (typeof string === "string" && string.includes(':')) {
-        return string.split(separator)
+        return string.split(separator)[index]
     }
     return string
 }

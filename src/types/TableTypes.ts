@@ -24,18 +24,18 @@ export interface RowItem {
 }
 
 
-
-
-export interface Item {
-    id: number | string;
-    typeColumn: TypeColumn;
+export type Item = {
+    id?: number | string;
+    typeColumn: keyof TypeColumn;
     value: string | number | boolean;
     wasEdit: boolean;
     dependencyId?: number | string;
 }
 
-
-
+export type ItemObject  =  Record<TypeColumn, Item>
+    // {
+    // [name in TypeColumn]: Item
+// }
 
 
 export type IDataColumn = {
@@ -79,7 +79,7 @@ export type TableStructure = {
     [name in TypeColumn]?: InputParams
 }
 export type DependencyTree = {
-    [name in TypeTable]?: { own: string, children?: DependencyTree }
+    [name in TypeTable]?: { own: TypeTable, children?: DependencyTree }
 }
 export type DataEntitiesTableStructure = {
     dependencyWeb: TypeTable[]

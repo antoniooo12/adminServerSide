@@ -1,4 +1,5 @@
-import {TableController} from "../../controller/tableController/table.controller";
+import {TableController} from "../../src/controller/tableController/table.controller";
+
 
 const sequelize = require('../../db/dbSequelize')
 

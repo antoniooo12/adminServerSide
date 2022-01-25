@@ -3,15 +3,15 @@ import {Item} from "../types/TableTypes";
 const _ = require('lodash');
 
 
-export const capitalize = s => s && s[0].toUpperCase() + s.slice(1)
+export const capitalize = (s:string) => s && s[0].toUpperCase() + s.slice(1)
 
 
-export function parseObject(rowDb, nameColumn) {
+export function parseObject(rowDb:any, nameColumn:any) {
     let counter = 0
     let object = {}
     aFNTest(rowDb, nameColumn)
 
-    function aFNTest(rowDb, nameColumn) {
+    function aFNTest(rowDb:any, nameColumn:any) {
         Object.keys(rowDb).forEach((key, index) => {
             const item = rowDb[key]
             if (!_.isObject(item)) {
