@@ -9,7 +9,7 @@ async function up(queryInterface: QueryInterface) {
 
 // export
 async function down(queryInterface: QueryInterface) {
-    await queryInterface.removeColumn('users', 'telegram');
+    await queryInterface.dropTable('Category');
 }
 
 module.exports = {up, down}

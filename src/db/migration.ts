@@ -3,6 +3,7 @@ import path from 'path';
 import sequelize, {DataTypes} from 'sequelize';
 import Migration from './model/_Migration';
 import {db} from './dbSequelize';
+import {readDir} from "../services/hellpers";
 
 const logger = console;
 const migrationsPath = path.join(__dirname, 'migrations');
@@ -51,16 +52,6 @@ export async function runMigrations() {
   }
 
 // @ts-ignore
-  function readDir(dir) {
-    return new Promise((resolve, reject) => {
-      fs.readdir(dir, (errDir, files) => {
-        if (errDir) {
-          return reject(errDir);
-        }
-        return resolve(files);
-      });
-    });
-  }
 }
 
 // @ts-ignore
