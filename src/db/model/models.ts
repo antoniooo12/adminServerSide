@@ -1,9 +1,13 @@
 import {ModelDefined} from "sequelize";
 import {
-    CategoryAttributes, CategoryCreationAttributes,
+    CategoryAttributes,
+    CategoryCreationAttributes,
     ProductAttributes,
-    ProductCreationAttributes, SubcategoryAttributes, SubcategoryCreationAttributes,
-    TypeOfProductAttributes, TypeOfProductCreationAttributes
+    ProductCreationAttributes,
+    SubcategoryAttributes,
+    SubcategoryCreationAttributes,
+    TypeOfProductAttributes,
+    TypeOfProductCreationAttributes
 } from "../../types/database/models/Table/GoodsTypes";
 
 const {Sequelize, DataTypes} = require('sequelize')

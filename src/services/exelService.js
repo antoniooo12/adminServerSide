@@ -2,7 +2,6 @@ const fs = require('fs')
 const config = require('config')
 const xlsx = require('xlsx')
 const {Product} = require("../db/model/models");
-const db = require('../db/db')
 const typeController = require('../controller/type.controller')
 
 class ExelService {

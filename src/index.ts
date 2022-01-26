@@ -35,7 +35,7 @@ app.use('/api/goods', productRouter)
 const start = async () => {
     try {
         await sequelize.authenticate()
-        await sequelize.sync({force: true})
+        await sequelize.sync()
         console.log('Соединение с БД было успешно установлено')
         app.listen(PORT, () => {
 
