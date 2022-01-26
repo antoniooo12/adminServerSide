@@ -1,9 +1,8 @@
 import {DependencyTree, Item, ItemObject, RowItem, TypeColumn, TypeTable} from "../../types/TableTypes";
 import {separateString} from "../../services/hellpers";
-import * as models from '../../db/model/models'
+import * as models from '../../db/models'
 import {Request, Response, NextFunction} from 'express';
 
-import {Category, Product, Subcategory} from '../../db/model/models'
 import {TableCreatorMokData} from "../../mokData";
 import {parseObject} from "../../hellpers/hellpers";
 import {Filterable, Model, ModelDefined} from "sequelize";

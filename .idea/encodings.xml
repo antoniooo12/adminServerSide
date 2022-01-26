@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/db/migration.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/db/migrations/2022-01-26-init.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/db/model/User.ts" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/files/demo2.csv" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/files/test1.csv" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/types/TableTypes.ts" charset="UTF-8" />

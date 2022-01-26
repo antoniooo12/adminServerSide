@@ -1,5 +1,4 @@
 import {EnumInput, EnumStyles, TablesCreator} from "./types/TableTypes";
-import {Category} from "./db/model/models";
 
 
 export const TableCreatorMokData: TablesCreator = {

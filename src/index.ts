@@ -1,16 +1,14 @@
-import {Product, TypeOfProduct} from "./db/model/models";
 
 const express = require('express')
 
 import config = require('config')
-
 const PORT = config.get('serverPort') || 4200
 const fileUpload = require("express-fileupload")
 const cors = require('cors')
 const path = require('path')
-const sequelize = require('./db/dbSequelize')
-
+import {openConnection, db} from "./db/dbSequelize";
 import {productRouter} from './routes/productRouter.routes'
+import {runMigrations} from "./db/migration";
 
 const app = express()
 
@@ -34,8 +32,12 @@ app.use('/api/goods', productRouter)
 
 const start = async () => {
     try {
-        await sequelize.authenticate()
-        await sequelize.sync()
+        // await sequelize.authenticate()
+        // await sequelize.sync()
+        await openConnection()
+        await runMigrations()
+
+        // await sequelize.transaction()
         console.log('Соединение с БД было успешно установлено')
         app.listen(PORT, () => {
 
@@ -51,7 +53,6 @@ const start = async () => {
 start()
 
 module.exports = app
-
 
 
 

@@ -8,10 +8,10 @@ import {
     SubcategoryCreationAttributes,
     TypeOfProductAttributes,
     TypeOfProductCreationAttributes
-} from "../../types/database/models/Table/GoodsTypes";
+} from "../types/database/models/Table/GoodsTypes";
 
 const {Sequelize, DataTypes} = require('sequelize')
-const sequelize = require('../dbSequelize')
+import {db} from "./dbSequelize";
 
 // const User = sequelize.define('user', {
 //     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -23,7 +23,7 @@ const sequelize = require('../dbSequelize')
 //     role: {type: DataTypes.STRING, defaultValue: "USER"},
 // })
 
-const Product: ModelDefined<ProductAttributes, ProductCreationAttributes> = sequelize.define(
+const Product: ModelDefined<ProductAttributes, ProductCreationAttributes> = db.define(
     'Product',
     {
 
@@ -35,17 +35,17 @@ const Product: ModelDefined<ProductAttributes, ProductCreationAttributes> = sequ
         image: {type: DataTypes.STRING, defaultValue: ''},
     })
 
-const Category: ModelDefined<CategoryAttributes, CategoryCreationAttributes> = sequelize.define('Category', {
+const Category: ModelDefined<CategoryAttributes, CategoryCreationAttributes> = db.define('Category', {
     id: {type: DataTypes.INTEGER, primaryKey: true,unique: true, autoIncrement: true},
     value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 
-const TypeOfProduct: ModelDefined<TypeOfProductAttributes, TypeOfProductCreationAttributes> = sequelize.define('TypeOfProduct', {
+const TypeOfProduct: ModelDefined<TypeOfProductAttributes, TypeOfProductCreationAttributes> = db.define('TypeOfProduct', {
     id: {type: DataTypes.INTEGER, primaryKey: true, unique: true,autoIncrement: true},
     value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 
-const Subcategory: ModelDefined<SubcategoryAttributes, SubcategoryCreationAttributes> = sequelize.define('Subcategory', {
+const Subcategory: ModelDefined<SubcategoryAttributes, SubcategoryCreationAttributes> = db.define('Subcategory', {
     id: {type: DataTypes.INTEGER, primaryKey: true,unique: true, autoIncrement: true},
     value: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
