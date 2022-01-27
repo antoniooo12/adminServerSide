@@ -28,7 +28,9 @@ export interface RowItem {
     wasEdit: boolean,
     columns: Array<Item>,
 }
-
+export type ColumnStructure = {
+    [name in  TypeColumn]?: Item
+}
 
 export type Item = {
     id?: number | string;

@@ -1,11 +1,19 @@
-import {DependencyTree, Item, ItemObject, RowItem, TypeColumn, TypeTable} from "../../types/TableTypes";
+import {
+    ColumnStructure,
+    DependencyTree,
+    Item,
+    ItemObject,
+    RowItem,
+    TypeColumn,
+    TypeTable
+} from "../../types/TableTypes";
 import {separateString} from "../../services/hellpers";
 
 import {Request, Response, NextFunction} from 'express';
 
 import {TableCreatorMokData} from "../../mokData";
 import {parseObject} from "../../hellpers/hellpers";
-import {Filterable, IncludeOptions, Model, ModelDefined, Sequelize} from "sequelize";
+import {col, Filterable, IncludeOptions, Model, ModelDefined, Sequelize} from "sequelize";
 import express from "express";
 import {TableAttributes, TableCreationAttributes, TableType} from "../../types/database/models/Table";
 import {Key} from "readline";
@@ -20,6 +28,9 @@ import {type} from "os";
 import {isKeyObject} from "util/types";
 import any = jasmine.any;
 import {models} from "../../db/model/Goods/index";
+import {Subcategory} from "../../db/model/Goods/Subcategory";
+import {Category} from "../../db/model/Goods/Category";
+import {Product} from "../../db/model/Goods/Product";
 
 const _ = require('lodash');
 
@@ -117,7 +128,7 @@ class TableController {
 
     async getAllRowsByTableNameSequelize(req: Request, res: Response) {
         const {typeTable} = req.query as { typeTable: TypeTable }
-
+        // const typeTable: TypeTable = 'Product'
         const chosenModel = models.get(typeTable) as ModelDefined<TableAttributes, TableCreationAttributes>
         const dependencyTree = TableCreatorMokData[typeTable as TypeTable].dependencyTree as DependencyTree
 
@@ -127,15 +138,33 @@ class TableController {
             attributes: {exclude: ['createdAt', 'updatedAt']},
             include: includes || []
         })
+
         const toApp: Item[][] = resDb.map(function (resDbItem) {
             const rowDb = resDbItem.get()
             const rowObj = parseObject(rowDb, typeTable)
             return rowObj
         }, {})
-        console.log(toApp)
+        // const toApp2 = serverTableToApp(resDb, typeTable)
+        // console.log(toApp)
+
         return res.json(toApp)
     }
 }
+
+// function serverTableToApp(outerArray: Model<TableAttributes, TableCreationAttributes>[], tableName: TypeColumn) {
+//     let counter = 0
+//
+//     function recurse(array: Model<TableAttributes, TableCreationAttributes>, columnName: TypeColumn) {
+//         Object.keys(array).reduce((accumulator: ColumnStructure, key) => {
+//             return accumulator[key]
+//         }, {})
+//     }
+//
+//     return outerArray.map((line) => {
+//         return recurse(line, tableName)
+//     }, new Map())
+//
+// }
 
 function dependencyTreeToArray(dependencyTree: DependencyTree) {
     function recurse(obj: DependencyTree) {
@@ -160,6 +189,7 @@ function parsDependencyTree(dependencyTree: DependencyTree) {
             if (dependency) {
                 const a: IncludeOptions = {
                     model: models.get(dependency.own),
+                    as: dependency.own,
                     attributes: {exclude: ['createdAt', 'updatedAt']},
                     include: dependency.children
                         ? recurse(dependency.children)

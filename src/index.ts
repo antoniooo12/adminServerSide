@@ -15,7 +15,7 @@ import {openConnection, db} from "./db/dbSequelize";
 import {productRouter} from './routes/productRouter.routes'
 import {revertMigration, runMigrations} from "./db/migration";
 import {stdin as input, stdout as output} from "process";
-import {setAssociations} from "./db/Asociations/aspciations";
+import {setAssociations} from "./db/Asociations/asociations";
 
 const app = express()
 
