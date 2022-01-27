@@ -27,3 +27,15 @@ export function readDir(dir: string) {
         });
     });
 }
+
+
+function parsConsoleArgs(args: string[]) {
+    const parsedArgs = args.reduce((accumulator: any, argument) => {
+        const value = Number(argument.split('=')[1]) || `${argument.split('=')[1]}`
+        console.log(argument)
+        accumulator[argument.split('=')[0].substring(2)] = value
+        return accumulator
+
+    }, {})
+    return parsedArgs
+}

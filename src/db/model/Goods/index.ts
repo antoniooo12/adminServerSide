@@ -3,10 +3,17 @@ import Migration from "../_Migration";
 import {readDir} from "../../../services/hellpers";
 
 const goodsPath = path.join(__dirname);
-import Category from "./Category";
-import Subcategory from "./Subcategory";
+import {Category} from "./Category";
+import {Subcategory} from "./Subcategory";
+import {TypeOfProduct} from "./TypeOfProduct";
+import {Product} from "./Product";
 
-export const models = new Map([['Category', Category],['Subcategory', Subcategory] ])
+export const models = new Map([
+    ['Category', Category],
+    ['Subcategory', Subcategory],
+    ['TypeOfProduct', TypeOfProduct],
+    ['Product', Product],
+])
 
 export async function getGoodsModels() {
 

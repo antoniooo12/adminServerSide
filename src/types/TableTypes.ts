@@ -4,7 +4,12 @@ export const DataEntitiesCatalog = {
     Subcategory: "підкатегорії",
     TypeOfProduct: 'тип продуктів',
 }
-
+export const ColumnId = {
+    CategoryId: ' CategoryId',
+    SubcategoryId: ' SubcategoryId',
+    ProductId: ' ProductId',
+    TypeOfProductId: ' TypeOfProductId',
+}
 export const DataColumn = {
     Product: 'продукти',
     Category: "категорія",
@@ -14,6 +19,7 @@ export const DataColumn = {
     price: 'ціна',
     priority: 'пріорітет',
 }
+export type TypeColumnId = keyof typeof ColumnId
 
 
 export interface RowItem {
@@ -29,7 +35,7 @@ export type Item = {
     typeColumn: keyof TypeColumn;
     value: string | number | boolean;
     wasEdit: boolean;
-    dependencyId?: number | string;
+    dependencyId?: Record<TypeColumnId, number>
 }
 
 export type ItemObject  =  Record<TypeColumn, Item>

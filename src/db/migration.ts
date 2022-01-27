@@ -21,8 +21,6 @@ export async function runMigrations() {
   });
 
   logger.debug(`Scan folder "${migrationsPath}" for migrations`, {scope: 'migrations'});
-  console.log('+++++++++')
-  console.log(migrationsPath)
   const [list, migrations] = await Promise.all([
     readDir(migrationsPath),
     Migration.findAll()
@@ -32,7 +30,6 @@ export async function runMigrations() {
   // @ts-ignore
   for (const file of list) {
     if (!(file.match(/\.js$/) || file.match(/\.ts$/))) {
-      console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
       continue;
     }
     const appliedMigration = migrations.find((migration) => migration.filename === file);
@@ -51,13 +48,11 @@ export async function runMigrations() {
 
   }
 
-// @ts-ignore
 }
 
 // @ts-ignore
 export async function revertMigration(name) {
   const migrationFile = path.join(migrationsPath, name);
-
   logger.debug(`Reverting "${migrationFile}"...`, {scope: 'migrations'});
 
   const migration = await Migration.findOne({

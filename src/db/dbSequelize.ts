@@ -8,7 +8,7 @@ export const namespace = createNamespace('ns')
 Sequelize.useCLS(namespace)
 
 const dbParams = config.get('db')
-console.log(dbParams)
+
 export const db = new Sequelize(dbParams.database,
     dbParams.user, dbParams.password, {
         port: dbParams.port,

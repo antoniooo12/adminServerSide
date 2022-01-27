@@ -1,14 +1,21 @@
+// const readline = require('readline');
+import * as readline from "readline";
+import {stdin, stdout} from 'process';
 
 const express = require('express')
+const rl = readline.createInterface({input: stdin, output: stdout, prompt: '>'});
 
 import config = require('config')
+
 const PORT = config.get('serverPort') || 4200
 const fileUpload = require("express-fileupload")
 const cors = require('cors')
 const path = require('path')
 import {openConnection, db} from "./db/dbSequelize";
 import {productRouter} from './routes/productRouter.routes'
-import {runMigrations} from "./db/migration";
+import {revertMigration, runMigrations} from "./db/migration";
+import {stdin as input, stdout as output} from "process";
+import {setAssociations} from "./db/Asociations/aspciations";
 
 const app = express()
 
@@ -29,14 +36,13 @@ app.use(express.static(path.resolve(__dirname, 'build')))
 app.use('/api/goods', productRouter)
 
 
-
 const start = async () => {
     try {
         // await sequelize.authenticate()
         // await sequelize.sync()
         await openConnection()
         await runMigrations()
-
+        await setAssociations()
         // await sequelize.transaction()
         console.log('Соединение с БД было успешно установлено')
         app.listen(PORT, () => {
@@ -51,6 +57,15 @@ const start = async () => {
 }
 
 start()
+rl.on('line', async (command) => {
+    if (command === 'revertMigration') {
+        rl.question('input migration ', async (migration) => {
+            await revertMigration(migration)
+        })
+    } else if (command === 'runMigrations') {
+        await runMigrations()
+    }
+})
 
 module.exports = app
 

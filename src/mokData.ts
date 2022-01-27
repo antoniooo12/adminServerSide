@@ -1,5 +1,9 @@
-import {EnumInput, EnumStyles, TablesCreator} from "./types/TableTypes";
+import {EnumInput, EnumStyles, TablesCreator, TypeColumn} from "./types/TableTypes";
 
+export const dependentsIdMok: Map<TypeColumn, string[]> = new Map([
+    ['Subcategory', ['CategoryId']],
+    ['Product', ['SubcategoryId', "TypeOfProductId"]]
+])
 
 export const TableCreatorMokData: TablesCreator = {
     Category: {
