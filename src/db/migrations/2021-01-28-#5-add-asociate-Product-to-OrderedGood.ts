@@ -1,16 +1,14 @@
 import {DataTypes, QueryInterface} from "sequelize";
-import {Subcategory} from "../model/Goods/Subcategory";
-import {Product} from "../model/Goods/Product";
 
 module.exports = {
     up: (queryInterface: QueryInterface) => {
         return queryInterface.addColumn(
-            'Product', // name of Source model
-            'SubcategoryId', // name of the key we're adding
+            'OrderedGood', // name of Source model
+            'ProductId', // name of the key we're adding
             {
                 type: DataTypes.INTEGER,
                 references: {
-                    model: 'Subcategory', // name of Target model
+                    model: 'Product', // name of Target model
                     key: 'id', // key in Target model that we're referencing
                 },
                 onUpdate: 'CASCADE',
@@ -21,8 +19,8 @@ module.exports = {
 
     down: (queryInterface: QueryInterface) => {
         return queryInterface.removeColumn(
-            'Product', // name of Source model
-            'SubcategoryId' // key we want to remove
+            'OrderedGood', // name of Source model
+            'ProductId',// key we want to remove
         );
     }
 };

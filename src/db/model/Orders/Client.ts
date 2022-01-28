@@ -10,8 +10,6 @@ export const Client: ModelDefined<ClientAttributes, ClientCreationAttributes> = 
         surname: {type: DataTypes.STRING},
         address: {type: DataTypes.STRING},
         comments: {type: DataTypes.TEXT},
-        timeFrameFrom: {type:DataTypes.DATE},
-        timeFrameTo: {type:DataTypes.DATE},
         number: {type: DataTypes.INTEGER},
     }, {
         tableName: 'Client',

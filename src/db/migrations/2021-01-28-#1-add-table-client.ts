@@ -7,14 +7,12 @@ async function up(queryInterface: QueryInterface) {
         surname: {type: DataTypes.STRING},
         address: {type: DataTypes.STRING},
         comments: {type: DataTypes.TEXT},
-        timeFrameFrom: {type: DataTypes.DATE},
-        timeFrameTo: {type: DataTypes.DATE},
-        number: {type: DataTypes.INTEGER},
+        number: {type: DataTypes.STRING},
     }, {});
 }
 
 async function down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('Client');
+    await queryInterface.dropTable('Client', {cascade: true});
 }
 
 module.exports = {up, down}
