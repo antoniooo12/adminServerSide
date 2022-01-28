@@ -48,6 +48,5 @@ export function parseObject(rowDb: any, nameColumn: any) {
     }, [])
 
 
-    console.log(typeof parsedRowsArr)
     return parsedRowsArr
 }

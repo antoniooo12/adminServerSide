@@ -8,7 +8,7 @@
 //     SubcategoryCreationAttributes,
 //     TypeOfProductAttributes,
 //     TypeOfProductCreationAttributes
-// } from "../types/database/models/Table/GoodsTypes";
+// } from "../types/databaseActions/models/Table/GoodsTypes";
 //
 // const {Sequelize, DataTypes} = require('sequelize')
 // import {db} from "./dbSequelize";

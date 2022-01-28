@@ -11,7 +11,7 @@ import {separateString} from "../../services/hellpers";
 
 import {Request, Response, NextFunction} from 'express';
 
-import {TableCreatorMokData} from "../../mokData";
+import {dependentsIdMok, TableCreatorMokData} from "../../mokData";
 import {parseObject} from "../../hellpers/hellpers";
 import {col, Filterable, IncludeOptions, Model, ModelDefined, Sequelize} from "sequelize";
 import express from "express";
@@ -31,6 +31,7 @@ import {models} from "../../db/model/Goods/index";
 import {Subcategory} from "../../db/model/Goods/Subcategory";
 import {Category} from "../../db/model/Goods/Category";
 import {Product} from "../../db/model/Goods/Product";
+import {io} from "../../index";
 
 const _ = require('lodash');
 
@@ -74,7 +75,6 @@ class TableController {
             newToServer,
             allToUpdate
         }: { behavior: TypeTable, allToDelete: [], newToServer: Array<TableType>, allToUpdate: Array<TableType> } = req.body
-        console.log(behavior)
         const chosenModel = models.get(behavior) as ModelDefined<TableAttributes, TableCreationAttributes>
 
         // await getGoodsModels()
@@ -89,7 +89,6 @@ class TableController {
                         }
                         accumulator.id = column.id
                     }
-                    console.log(`${behavior} : ${column.typeColumn}`)
                     if (behavior === column.typeColumn) {
                         accumulator.value = separateString(column.value, ':', 1)
                     } else if (behavior !== column.typeColumn && typeof Number(separateString(column.value, ':', 0)) === "number" && NameToTableId[column.typeColumn] !== undefined) {
@@ -110,17 +109,15 @@ class TableController {
 
         const newToDb = tablePareWebToDb<TableType>(newToServer)
         const updateInDb = tablePareWebToDb<TableType>(allToUpdate)
-        const updateOnDuplicate = allToUpdate.map(line => {
-            console.log(Object.keys(line[behavior]))
-        })
+        const dependentColumnId = dependentsIdMok.get(behavior) || [] as string[]
 
+        const updateOnDuplicate = Object.keys(allToUpdate).length > 0
+            ? [...dependentColumnId, ...Object.keys(allToUpdate[0]), 'id', 'value'] as ('value')[]
+            : ['id', 'value'] as ('value')[]
 
-        // const dependencyTree = TableCreatorMokData[behavior].dependencyTree as DependencyTree
-        // const updateOnDuplicate = dependencyTreeToArray(dependencyTree)
-        // // console.log(chosenModel)
 
         const resDbCreate = await chosenModel.bulkCreate(newToDb)
-        const resDbUpdate = await chosenModel.bulkCreate(updateInDb, {updateOnDuplicate: ['id', 'value']})
+        const resDbUpdate = await chosenModel.bulkCreate(updateInDb, {updateOnDuplicate: updateOnDuplicate})
         const resDbDelete = await chosenModel.destroy({where: {id: allToDelete}})
 
         return res.json('')
@@ -145,7 +142,6 @@ class TableController {
             return rowObj
         }, {})
         // const toApp2 = serverTableToApp(resDb, typeTable)
-        // console.log(toApp)
 
         return res.json(toApp)
     }

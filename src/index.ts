@@ -16,8 +16,14 @@ import {productRouter} from './routes/productRouter.routes'
 import {revertMigration, runMigrations} from "./db/migration";
 import {stdin as input, stdout as output} from "process";
 import {setAssociations} from "./db/Asociations/asociations";
+import {createServer} from "http";
+import {Server} from "socket.io";
+
+import {ROOM_SET_USERS} from "./soket/rootSocket";
+import {DATABASE_ACTIONS} from "./soket/databaseActions/databaseActions";
 
 const app = express()
+const httpServer = createServer(app);
 
 const corsOptions = {
     origin: 'http://localhost:3030',
@@ -35,6 +41,12 @@ app.use(express.static(path.resolve(__dirname, 'build')))
 
 app.use('/api/goods', productRouter)
 
+export const io = new Server(httpServer, {
+    cors: {
+        origin: "http://localhost:3030",
+    }
+})
+
 
 const start = async () => {
     try {
@@ -45,7 +57,7 @@ const start = async () => {
         await setAssociations()
         // await sequelize.transaction()
         console.log('Соединение с БД было успешно установлено')
-        app.listen(PORT, () => {
+        httpServer.listen(PORT, () => {
 
             console.log(`server run on ${PORT}  `)
         })
@@ -57,6 +69,31 @@ const start = async () => {
 }
 
 start()
+export type User = {
+    name: string
+}
+export type id = number | string
+export type Room = Map<id, User>
+export type Rooms = Map<id, Room>
+
+
+io.on('connection', async (socket) => {
+    console.log(socket)
+    ROOM_SET_USERS(socket)
+    DATABASE_ACTIONS(socket)
+    // socket.on('ROOM:SET_USERS', async ({roomId, user}: { roomId: string, user: User }) => {
+    //         if (!rooms.has(roomId)) {
+    //             const newRoom: Room = new Map([[socket.id, user]])
+    //             rooms.set(roomId, newRoom)
+    //         }
+    //         console.log(io.sockets.adapter.rooms)
+    //         await socket.join(roomId)
+    //         console.log(io.sockets.adapter.rooms)
+    //         const users = rooms.get(roomId)
+    //     }
+    // )
+})
+
 rl.on('line', async (command) => {
     if (command === 'revertMigration') {
         rl.question('input migration ', async (migration) => {
@@ -66,6 +103,7 @@ rl.on('line', async (command) => {
         await runMigrations()
     }
 })
+
 
 module.exports = app
 
