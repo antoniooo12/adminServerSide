@@ -52,14 +52,10 @@ export type GoodsAttributes = ProductAttributes &
     CategoryAttributes &
     TypeOfProductAttributes &
     FrontendSpecific
-// export type GoodsAttributes1 = ProductAttributes |
-//     SubcategoryAttributes |
-//     CategoryAttributes |
-//     TypeOfProductAttributes |
-//     FrontendSpecific
 
 export type  GoodsCreationAttributes = ProductCreationAttributes &
     SubcategoryCreationAttributes &
     CategoryCreationAttributes &
     TypeOfProductCreationAttributes &
     FrontendSpecific
+
