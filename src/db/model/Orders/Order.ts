@@ -6,9 +6,7 @@ import {
     OrderAttributes,
     OrderCreationAttributes,
     OrderedGoodAttributes,
-    OrderedGoodCreationAttributes,
-    OrderedGoodListAttributes,
-    OrderedGoodListCreationAttributes
+    OrderedGoodCreationAttributes, TimeFrameAttributes, TimeFrameCreationAttributes
 } from "../../../types/database/models/Orders/OrderType";
 
 export const OrderedGood:
@@ -22,14 +20,7 @@ export const OrderedGood:
         tableName: 'OrderedGood',
     })
 
-export const OrderedGoodList:
-    ModelDefined<OrderedGoodListAttributes, OrderedGoodListCreationAttributes> = db.define(
-    'OrderedGoodList',
-    {
-        id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
-    }, {
-        tableName: 'OrderedGoodList',
-    })
+
 
 export const OrderAdditionalInformation:
     ModelDefined<OrderAdditionalInformationAttributes, OrderAdditionalInformationCreationAttributes> = db.define(
@@ -40,13 +31,40 @@ export const OrderAdditionalInformation:
         sum: {type: DataTypes.DECIMAL(10, 2)},
     }, {
         tableName: 'OrderAdditionalInformation',
+        charset: 'utf8',
+        collate: 'utf8_general_ci',
+
     })
+
+export const TimeFrame :
+    ModelDefined<TimeFrameAttributes, TimeFrameCreationAttributes> = db.define(
+        'TimeFrame',
+{
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    deliverFrom: DataTypes.DATE,
+    deliverTo: DataTypes.DATE,
+},{
+        tableName: 'TimeFrame',
+
+    }
+)
 
 export const Order:
     ModelDefined<OrderAttributes, OrderCreationAttributes> = db.define(
     'Order',
     {
-        id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            unique: true,
+            primaryKey: true,
+        }
     }, {
+        timestamps: true,
         tableName: 'Order',
     })

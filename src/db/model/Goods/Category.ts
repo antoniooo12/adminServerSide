@@ -5,7 +5,7 @@ import {CategoryAttributes, CategoryCreationAttributes} from "../../../types/dat
 
 export const Category: ModelDefined<CategoryAttributes, CategoryCreationAttributes> = db.define('Category', {
     id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
-    value: {type: DataTypes.STRING, unique: true, allowNull: false}
+    value: {type: DataTypes.STRING,  allowNull: false}
 }, {
     tableName: 'Category',
 })

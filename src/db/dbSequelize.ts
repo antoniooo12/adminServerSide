@@ -1,5 +1,4 @@
 import {Sequelize} from "sequelize";
-import model from "./model/Category";
 import {createNamespace} from "cls-hooked";
 
 const config = require('config')

@@ -1,37 +1,17 @@
-import {
-    ColumnStructure,
-    DependencyTree,
-    Item,
-    ItemObject,
-    RowItem,
-    TypeColumn,
-    TypeTable
-} from "../../types/TableTypes";
-import {separateString} from "../../services/hellpers";
+import {DependencyTree, Item, TypeGoodsTable, TypeTable} from "../../types/TableTypes";
+import {tablePareWebToDb} from "../../services/hellpers";
 
-import {Request, Response, NextFunction} from 'express';
+import express, {Request, Response} from 'express';
 
 import {dependentsIdMok, TableCreatorMokData} from "../../mokData";
-import {parseObject} from "../../hellpers/hellpers";
-import {col, Filterable, IncludeOptions, Model, ModelDefined, Sequelize} from "sequelize";
-import express from "express";
+import {IncludeOptions, ModelDefined} from "sequelize";
 import {TableAttributes, TableCreationAttributes, TableType} from "../../types/database/models/Table";
-import {Key} from "readline";
-import {keys, keysIn} from "lodash";
-import {
-    CategoryAttributes, CategoryCreationAttributes,
-    GoodsAttributes,
-    GoodsCreationAttributes,
-    ProductAttributes, SubcategoryAttributes, SubcategoryCreationAttributes
-} from "../../types/database/models/Table/GoodsTypes";
-import {type} from "os";
-import {isKeyObject} from "util/types";
-import any = jasmine.any;
 import {models} from "../../db/model/Goods/index";
 import {Subcategory} from "../../db/model/Goods/Subcategory";
 import {Category} from "../../db/model/Goods/Category";
 import {Product} from "../../db/model/Goods/Product";
-import {io} from "../../index";
+import {databaseService, parsDependencyTree} from "../../services/database/DatabaseService";
+import {ColumnReduxStructure} from "../../services/database/helpers";
 
 const _ = require('lodash');
 
@@ -57,14 +37,7 @@ const dictionaryColumns = {
 const TableIdToDependencyId = {}
 
 
-type TableNameToTableId = {
-    [name: string]: string
-}
-const NameToTableId: TableNameToTableId = {
-    Category: 'CategoryId',
-    Subcategory: 'SubcategoryId',
-    TypeOfProduct: 'TypeOfProductId'
-}
+
 
 class TableController {
     async bulkSave(req: express.Request, res: express.Response) {
@@ -74,50 +47,27 @@ class TableController {
             allToDelete,
             newToServer,
             allToUpdate
-        }: { behavior: TypeTable, allToDelete: [], newToServer: Array<TableType>, allToUpdate: Array<TableType> } = req.body
-        const chosenModel = models.get(behavior) as ModelDefined<TableAttributes, TableCreationAttributes>
+        }: { behavior: TypeTable, allToDelete: [], newToServer: Array<ColumnReduxStructure>, allToUpdate: Array<ColumnReduxStructure> } = req.body
+
+        const chosenModel = models[behavior] as ModelDefined<TableAttributes, TableCreationAttributes>
 
         // await getGoodsModels()
+        console.log(newToServer)
+        const newToDb = tablePareWebToDb(newToServer, behavior)
+        const updateInDb = tablePareWebToDb(allToUpdate, behavior)
 
-        function tablePareWebToDb<T>(array: T[]) {
-            return array.map((line) => {
-                return Object.values(line).reduce((accumulator, column) => {
-
-                    if (column.id && column.typeColumn == behavior) {
-                        if (typeof column === 'boolean') {
-                            throw new Error('typeof column.id !== \'string\'')
-                        }
-                        accumulator.id = column.id
-                    }
-                    if (behavior === column.typeColumn) {
-                        accumulator.value = separateString(column.value, ':', 1)
-                    } else if (behavior !== column.typeColumn && typeof Number(separateString(column.value, ':', 0)) === "number" && NameToTableId[column.typeColumn] !== undefined) {
-                        const key = NameToTableId[column.typeColumn] as "dependencyId";
-                        if (key) {
-                            accumulator[key] = column.id
-                            // || Number(separateString(column.value, ':', 0))
-                        }
-                    } else if (column.typeColumn !== behavior) {
-                        const key = column.typeColumn as "value";
-                        accumulator[key] = column.value
-                    }
-                    return accumulator
-                }, {})
-
-            })
-        }
-
-        const newToDb = tablePareWebToDb<TableType>(newToServer)
-        const updateInDb = tablePareWebToDb<TableType>(allToUpdate)
-        const dependentColumnId = dependentsIdMok.get(behavior) || [] as string[]
+        const dependentColumnId = dependentsIdMok.get(behavior as TypeTable) || [] as string[]
 
         const updateOnDuplicate = Object.keys(allToUpdate).length > 0
             ? [...dependentColumnId, ...Object.keys(allToUpdate[0]), 'id', 'value'] as ('value')[]
-            : ['id', 'value'] as ('value')[]
+            : ['id', 'value'] as ('id')[]
+
+        console.log(updateOnDuplicate)
+        console.log(updateInDb)
 
 
         const resDbCreate = await chosenModel.bulkCreate(newToDb)
-        const resDbUpdate = await chosenModel.bulkCreate(updateInDb, {updateOnDuplicate: updateOnDuplicate})
+        const resDbUpdate = await chosenModel.bulkCreate(updateInDb, {updateOnDuplicate: ['value']})
         const resDbDelete = await chosenModel.destroy({where: {id: allToDelete}})
 
         return res.json('')
@@ -125,42 +75,30 @@ class TableController {
 
     async getAllRowsByTableNameSequelize(req: Request, res: Response) {
         const {typeTable} = req.query as { typeTable: TypeTable }
+        const toApp = await databaseService.getAllRowsByTableName(typeTable)
         // const typeTable: TypeTable = 'Product'
-        const chosenModel = models.get(typeTable) as ModelDefined<TableAttributes, TableCreationAttributes>
-        const dependencyTree = TableCreatorMokData[typeTable as TypeTable].dependencyTree as DependencyTree
-
-
-        const includes = parsDependencyTree(dependencyTree)
-        const resDb = await chosenModel.findAll({
-            attributes: {exclude: ['createdAt', 'updatedAt']},
-            include: includes || []
-        })
-
-        const toApp: Item[][] = resDb.map(function (resDbItem) {
-            const rowDb = resDbItem.get()
-            const rowObj = parseObject(rowDb, typeTable)
-            return rowObj
-        }, {})
+        // const chosenModel = models[typeTable] as ModelDefined<TableAttributes, TableCreationAttributes>
+        // const dependencyTree = TableCreatorMokData[typeTable as TypeGoodsTable].dependencyTree as DependencyTree
+        //
+        //
+        // const includes = parsDependencyTree(dependencyTree)
+        // const resDb = await chosenModel.findAll({
+        //     attributes: {exclude: ['createdAt', 'updatedAt']},
+        //     include: includes || []
+        // })
+        //
+        // const toApp: Item[][] = resDb.map(function (resDbItem) {
+        //     const rowDb = resDbItem.get()
+        //
+        //     const rowObj = parseObject(rowDb, typeTable)
+        //     return rowObj
+        // }, {})
         // const toApp2 = serverTableToApp(resDb, typeTable)
 
         return res.json(toApp)
     }
 }
 
-// function serverTableToApp(outerArray: Model<TableAttributes, TableCreationAttributes>[], tableName: TypeColumn) {
-//     let counter = 0
-//
-//     function recurse(array: Model<TableAttributes, TableCreationAttributes>, columnName: TypeColumn) {
-//         Object.keys(array).reduce((accumulator: ColumnStructure, key) => {
-//             return accumulator[key]
-//         }, {})
-//     }
-//
-//     return outerArray.map((line) => {
-//         return recurse(line, tableName)
-//     }, new Map())
-//
-// }
 
 function dependencyTreeToArray(dependencyTree: DependencyTree) {
     function recurse(obj: DependencyTree) {
@@ -178,28 +116,6 @@ function dependencyTreeToArray(dependencyTree: DependencyTree) {
     return recurse(dependencyTree)
 }
 
-function parsDependencyTree(dependencyTree: DependencyTree) {
-    function recurse(obj: DependencyTree) {
-        return Object.keys(obj).reduce((accumulator: any, key: string) => {
-            const dependency = obj[key as TypeTable]
-            if (dependency) {
-                const a: IncludeOptions = {
-                    model: models.get(dependency.own),
-                    as: dependency.own,
-                    attributes: {exclude: ['createdAt', 'updatedAt']},
-                    include: dependency.children
-                        ? recurse(dependency.children)
-                        : []
-                }
-                accumulator.push(a)
-            }
-            return accumulator
-        }, [])
-    }
-
-    const arr = recurse(dependencyTree)
-    return arr
-}
 
 
 export {

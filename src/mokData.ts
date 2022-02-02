@@ -1,9 +1,25 @@
-import {EnumInput, EnumStyles, TablesCreator, TypeColumn} from "./types/TableTypes";
+import {DependencyTree, EnumInput, EnumStyles, TablesCreator, TypeColumn, TypeTable} from "./types/TableTypes";
+import {Product} from "./db/model/Goods/Product";
+import {Client} from "./db/model/Orders/Client";
 
-export const dependentsIdMok: Map<TypeColumn, string[]> = new Map([
+export const dependentsIdMok: Map<TypeTable, string[]> = new Map([
     ['Subcategory', ['CategoryId']],
-    ['Product', ['SubcategoryId', "TypeOfProductId"]]
+    ['Product', ['SubcategoryId', "TypeOfProductId"]],
+    ['Order', ['ClientId']]
 ])
+type TableNameToTableId = {
+    [name: string]: string
+}
+export const NameToTableId: TableNameToTableId = {
+    Category: 'CategoryId',
+    Subcategory: 'SubcategoryId',
+    TypeOfProduct: 'TypeOfProductId',
+    Product: 'ProductId',
+}
+
+export const orderStatus = {
+    inProcess: 'inProcess',
+}
 
 export const TableCreatorMokData: TablesCreator = {
     Category: {
@@ -119,7 +135,7 @@ export const TableCreatorMokData: TablesCreator = {
     },
 
     TypeOfProduct: {
-        dependencyWeb: [],
+        dependencyWeb: ["Category", 'Subcategory'],
         dependencyTree: {},
         title: 'тип продуткти',
         columnParams: [{width: 150}],
@@ -133,6 +149,77 @@ export const TableCreatorMokData: TablesCreator = {
                 isMother: true,
             }
         }
+    },
+    OrderedGood: {
+        dependencyWeb: [],
+        dependencyTree: {}
+    },
+    // dependencyTree: {
+    //     TypeOfProduct: {own: 'TypeOfProduct'},
+    //     Subcategory: {own: 'Subcategory', children: {Category: {own: 'Category'}}}
+    // },
+    Client: {
+        dependencyWeb: [],
+        dependencyTree: {},
+    },
+    Order: {
+        dependencyWeb: ['Product'],
+        dependencyTree: {
+            OrderedGood: {own: 'OrderedGood', children: {Product: {own: 'Product'}}},
+            Client: {own: 'OrderedGood'},
+        },
+        title: 'Замовлення',
+        columnParams: [{width: 150}, {width: 150}, {width: 150}, {width: 150}],
+        header: [{title: 'Назва'}, {title: 'Кількість'}, {title: 'Ціна'}, {title: 'Всього'}],
+        row: {
+            Product: {
+                typeColumn: "Product",
+                typeInput: EnumInput.text,
+                isDropDownList: true,
 
+            },
+            count: {
+                typeColumn: "count",
+                rightTab: {
+                    dependentByTable: "Product",
+                    changeable: false,
+                    parameter: "TypeOfProduct",
+                },
+                typeInput: EnumInput.number,
+                // placeholder: 'name of product',
+                isDropDownList: false
+            },
+            price: {
+                typeColumn: "price",
+                typeInput: EnumInput.number,
+                dependent: {
+                    local: {
+                        dependentByTable: "Product",
+                        parameter: "price",
+                        changeable: false,
+                    }
+                },
+                isDropDownList: false
+            },
+            totalSum: {
+                typeColumn: "totalSum",
+                typeInput: EnumInput.number,
+                // placeholder: 'name of product',
+                isDropDownList: false,
+
+                formula: {
+                    local: {
+                        columns: [
+                            {
+                                column: "price", onOther: 'count', matchSing: function (first: number, second: number) {
+                                    return Math.round((first * second) * 1000) / 1000
+                                },
+                            }
+                        ]
+                    }
+                },
+            }
+        },
     }
+
 }

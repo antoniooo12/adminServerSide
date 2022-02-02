@@ -1,3 +1,5 @@
+import {TypeOrderTable} from "./Order";
+
 export const DataEntitiesCatalog = {
     Product: 'продукти',
     Category: "категорія",
@@ -18,6 +20,9 @@ export const DataColumn = {
     actual: "актуальность",
     price: 'ціна',
     priority: 'пріорітет',
+    count: 'кількість',
+    totalSum: 'Всього',
+    Order: 'Замовлення'
 }
 export type TypeColumnId = keyof typeof ColumnId
 
@@ -36,20 +41,20 @@ export type Item = {
     id?: number | string;
     typeColumn: keyof TypeColumn;
     value: string | number | boolean;
-    wasEdit: boolean;
     dependencyId?: Record<TypeColumnId, number>
 }
 
-export type ItemObject  =  Record<TypeColumn, Item>
-    // {
-    // [name in TypeColumn]: Item
+export type ItemObject = Record<TypeColumn, Item>
+// {
+// [name in TypeColumn]: Item
 // }
 
 
 export type IDataColumn = {
     readonly   [name: string]: string
 }
-export type TypeTable = keyof typeof DataEntitiesCatalog
+export type TypeGoodsTable = keyof typeof DataEntitiesCatalog
+export type TypeTable = TypeGoodsTable | TypeOrderTable
 export type TypeColumn = keyof typeof DataColumn
 
 export enum EnumInput {
@@ -70,9 +75,17 @@ export enum EnumStyles {
 export enum EnumStyleHeader {
 
 }
+
+export type DependentColumn = {
+    dependentByTable: TypeTable
+    parameter: TypeColumn
+    changeable: boolean
+}
+
 export interface InputParams {
     typeColumn: TypeColumn,
     isDropDownList: boolean,
+    rightTab?: DependentColumn
     filterByColumn?: TypeColumn,
     typeInput: EnumInput,
     placeholder?: string,
@@ -81,6 +94,16 @@ export interface InputParams {
     bigNumberStep?: number,
     style?: EnumStyles[],
     defaultState?: boolean | string | number,
+
+    dependent?: {
+        local?: DependentColumn
+    }
+
+    formula?: {
+        local?: {
+            columns: Array<{ column: TypeColumn | 'previous', matchSing: (first: number, second: number) => number, onOther?: TypeColumn }>
+        }
+    }
 }
 
 export type TableStructure = {
@@ -92,10 +115,10 @@ export type DependencyTree = {
 export type DataEntitiesTableStructure = {
     dependencyWeb: TypeTable[]
     dependencyTree: DependencyTree
-    title: string
-    columnParams: Array<{ width: number }>
-    header: Array<{ title: string, style?: EnumStyles[], }>
-    row: TableStructure
+    title?: string
+    columnParams?: Array<{ width: number }>
+    header?: Array<{ title: string, style?: EnumStyles[], }>
+    row?: TableStructure
 };
 
 export interface rowStructure {

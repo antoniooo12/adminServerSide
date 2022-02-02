@@ -9,7 +9,8 @@ export const Subcategory: ModelDefined<SubcategoryAttributes, SubcategoryCreatio
     id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
     value: {type: DataTypes.STRING, unique: true, allowNull: false}
 }, {
-        tableName: 'Subcategory'
-    })
+
+    tableName: 'Subcategory'
+})
 
 // Subcategory.belongsTo(Category)

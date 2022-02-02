@@ -21,6 +21,7 @@ import {Server} from "socket.io";
 
 import {ROOM_SET_USERS} from "./soket/rootSocket";
 import {DATABASE_ACTIONS} from "./soket/databaseActions/databaseActions";
+import {databaseService} from "./services/database/DatabaseService";
 
 const app = express()
 const httpServer = createServer(app);
@@ -78,9 +79,16 @@ export type Rooms = Map<id, Room>
 
 
 io.on('connection', async (socket) => {
-    console.log(socket)
-    ROOM_SET_USERS(socket)
+    // ROOM_SET_USERS(socket)
+
+
+    databaseService.getOrders()
+        .then(orders => {
+            console.log(orders)
+            io.emit('WEB:UPDATE:ORDERS', orders)
+        })
     DATABASE_ACTIONS(socket)
+
     // socket.on('ROOM:SET_USERS', async ({roomId, user}: { roomId: string, user: User }) => {
     //         if (!rooms.has(roomId)) {
     //             const newRoom: Room = new Map([[socket.id, user]])
@@ -99,6 +107,7 @@ rl.on('line', async (command) => {
         rl.question('input migration ', async (migration) => {
             await revertMigration(migration)
         })
+
     } else if (command === 'runMigrations') {
         await runMigrations()
     }

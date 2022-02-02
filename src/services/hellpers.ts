@@ -1,4 +1,8 @@
 import fs from "fs";
+import {NameToTableId} from "../mokData";
+import {ColumnReduxStructure} from "./database/helpers";
+import {Item} from "../types/TableTypes";
+import {TableAttributes} from "../types/database/models/Table";
 
 export function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -28,11 +32,41 @@ export function readDir(dir: string) {
     });
 }
 
+// T - ModelAttributes, N - TypeTable (parameter from frontend )
+export function tablePareWebToDb(array: ColumnReduxStructure[], typeTable: string) {
+    return array.map((line) => {
+        return Object.keys(line).reduce((accumulator: any, key) => {
+            const column = line[key as keyof ColumnReduxStructure] as Item
+            if (typeTable === key) {
+                accumulator.id = column.id
+            }
+            // console.log(`${typeTable}: ${column.typeColumn}`)
+            console.log(typeTable)
+
+
+            if (typeTable === key) {
+                accumulator.value = separateString(column.value, ':', 1)
+            } else if (typeTable !== column.typeColumn && typeof Number(separateString(column.value, ':', 0)) === "number" && NameToTableId[key] !== undefined) {
+                const keyBlock = NameToTableId[key] as "dependencyId";
+                if (keyBlock) {
+
+                    accumulator[keyBlock] = column.id
+                    // || Number(separateString(column.value, ':', 0))
+                }
+            } else if (column.typeColumn !== typeTable) {
+                const key = column.typeColumn as "value";
+                accumulator[key] = column.value
+            }
+            return accumulator
+        }, {})
+
+    })
+}
+
 
 function parsConsoleArgs(args: string[]) {
     const parsedArgs = args.reduce((accumulator: any, argument) => {
         const value = Number(argument.split('=')[1]) || `${argument.split('=')[1]}`
-        console.log(argument)
         accumulator[argument.split('=')[0].substring(2)] = value
         return accumulator
 

@@ -10,9 +10,7 @@ export function ROOM_SET_USERS(socket:  Socket<DefaultEventsMap, DefaultEventsMa
                 const newRoom: Room = new Map([[socket.id, user]])
                 rooms.set(roomId, newRoom)
             }
-            console.log(io.sockets.adapter.rooms)
             await socket.join(roomId)
-            console.log(io.sockets.adapter.rooms)
             const users = rooms.get(roomId)
         }
     )
