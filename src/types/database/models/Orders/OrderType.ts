@@ -1,28 +1,41 @@
 import {Optional} from "sequelize/types";
 
+export type ClientOrdersAttributes = {
+    id: number | string
+    ClientId: number
+    OrderId: number
+}
+
+export interface ClientOrdersCreationAttributes extends Optional<ClientOrdersAttributes, "id"> {
+}
+
+export type OrderAttributes = {
+    id: number
+}
+
+export interface OrderCreationAttributes extends Optional<OrderAttributes, "id"> {
+}
+
 export type  OrderedGoodAttributes = {
     id: number
     count: number
     totalSum: number
     ProductId: number
+    OrderId: number
 }
 
 export interface OrderedGoodCreationAttributes extends Optional<OrderedGoodAttributes, "id"> {
 }
 
-export type TimeFrameAttributes = {
-    id: number
-    deliverFrom: Date
-    deliverTo: Date
-}
 
-export interface TimeFrameCreationAttributes extends Optional<TimeFrameAttributes, "id"> {
-}
+
 export type OrderAdditionalInformationAttributes = {
     id: number
     sum: number
     status: string
     OrderId?: number | string
+    // deliverFrom: Date
+    // deliverTo: Date
     TimeFrameId?: number | string
 }
 
@@ -30,20 +43,12 @@ export interface OrderAdditionalInformationCreationAttributes extends Optional<O
 }
 
 
-export type OrderAttributes = {
-    id: number | string
-    ClientId: number | string
-    OrderAdditionalInformationId: number | string
-    number: number
-}
 
-export interface OrderCreationAttributes extends Optional<OrderAttributes, "id"> {
-}
 
 export type OrderAllAttributes = OrderedGoodAttributes &
     OrderAdditionalInformationAttributes &
-    OrderAttributes
+    ClientOrdersAttributes
 
 export type OrderAllCreationAttributes = OrderedGoodCreationAttributes &
     OrderAdditionalInformationCreationAttributes &
-    OrderCreationAttributes
+    ClientOrdersCreationAttributes

@@ -4,7 +4,7 @@ import {Category} from "./Category";
 import {Subcategory} from "./Subcategory";
 import {TypeOfProduct} from "./TypeOfProduct";
 import {Product} from "./Product";
-import {Order, OrderedGood} from "../Orders/Order";
+import {ClientOrders, OrderedGood} from "../Orders/ClientOrders";
 import {TypeTable} from "../../../types/TableTypes";
 import {ModelDefined} from "sequelize";
 import {TableAttributes, TableCreationAttributes} from "../../../types/database/models/Table";
@@ -14,7 +14,7 @@ import {
     GoodsAttributes,
     GoodsAttributesOr
 } from "../../../types/database/models/Table/GoodsTypes";
-import {OrderAttributes, OrderCreationAttributes} from "../../../types/database/models/Orders/OrderType";
+import {ClientOrdersAttributes, ClientOrdersCreationAttributes} from "../../../types/database/models/Orders/OrderType";
 
 const goodsPath = path.join(__dirname);
 
@@ -23,7 +23,7 @@ export const models: { [key: string]: any } = {
     Subcategory: Subcategory,
     TypeOfProduct: TypeOfProduct,
     Product: Product,
-    Order: Order,
+    Order: ClientOrders,
     OrderedGood: OrderedGood,
 }
 export async function getGoodsModels() {

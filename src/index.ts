@@ -1,34 +1,31 @@
 // const readline = require('readline');
 import * as readline from "readline";
 import {stdin, stdout} from 'process';
+import {openConnection} from "./db/dbSequelize";
+import {productRouter} from './routes/productRouter.routes'
+import {revertMigration, runMigrations} from "./db/migration";
+import {setAssociations} from "./db/Asociations/asociations";
+import {createServer} from "http";
+import {Server} from "socket.io";
+import {DATABASE_ACTIONS} from "./soket/databaseActions/databaseActions";
+import {sequelizeHooks} from "./db/sequelizeHooks";
+import {DatabaseOrder} from "./services/database/databaseOrder/DatabaseOrder";
 
 const express = require('express')
 const rl = readline.createInterface({input: stdin, output: stdout, prompt: '>'});
-
-import config = require('config')
+import config = require('config');
 
 const PORT = config.get('serverPort') || 4200
 const fileUpload = require("express-fileupload")
 const cors = require('cors')
 const path = require('path')
-import {openConnection, db} from "./db/dbSequelize";
-import {productRouter} from './routes/productRouter.routes'
-import {revertMigration, runMigrations} from "./db/migration";
-import {stdin as input, stdout as output} from "process";
-import {setAssociations} from "./db/Asociations/asociations";
-import {createServer} from "http";
-import {Server} from "socket.io";
-
-import {ROOM_SET_USERS} from "./soket/rootSocket";
-import {DATABASE_ACTIONS} from "./soket/databaseActions/databaseActions";
-import {databaseService} from "./services/database/DatabaseService";
 
 const app = express()
 const httpServer = createServer(app);
 
 const corsOptions = {
     origin: 'http://localhost:3030',
-    credentials: true,            //access-control-allow-credentials:true
+    credentials: true,
     optionSuccessStatus: 200
 }
 app.use(cors(corsOptions));
@@ -51,15 +48,12 @@ export const io = new Server(httpServer, {
 
 const start = async () => {
     try {
-        // await sequelize.authenticate()
-        // await sequelize.sync()
         await openConnection()
         await runMigrations()
         await setAssociations()
-        // await sequelize.transaction()
-        console.log('Соединение с БД было успешно установлено')
+        await sequelizeHooks()
+        console.log('The database connection was successfully established')
         httpServer.listen(PORT, () => {
-
             console.log(`server run on ${PORT}  `)
         })
 
@@ -79,27 +73,19 @@ export type Rooms = Map<id, Room>
 
 
 io.on('connection', async (socket) => {
-    // ROOM_SET_USERS(socket)
-
-
-    databaseService.getOrders()
+    DatabaseOrder.getOrders()
         .then(orders => {
-            console.log(orders)
+            console.log('-->  DatabaseOrder.getOrders')
             io.emit('WEB:UPDATE:ORDERS', orders)
         })
+    socket.on('WEB:UPDATE:ORDERS', async () => {
+        DatabaseOrder.getOrders()
+            .then(orders => {
+                console.log('--> WEB:UPDATE:ORDERS')
+                io.emit('WEB:UPDATE:ORDERS', orders)
+            })
+    })
     DATABASE_ACTIONS(socket)
-
-    // socket.on('ROOM:SET_USERS', async ({roomId, user}: { roomId: string, user: User }) => {
-    //         if (!rooms.has(roomId)) {
-    //             const newRoom: Room = new Map([[socket.id, user]])
-    //             rooms.set(roomId, newRoom)
-    //         }
-    //         console.log(io.sockets.adapter.rooms)
-    //         await socket.join(roomId)
-    //         console.log(io.sockets.adapter.rooms)
-    //         const users = rooms.get(roomId)
-    //     }
-    // )
 })
 
 rl.on('line', async (command) => {

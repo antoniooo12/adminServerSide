@@ -37,19 +37,14 @@ export function tablePareWebToDb(array: ColumnReduxStructure[], typeTable: strin
     return array.map((line) => {
         return Object.keys(line).reduce((accumulator: any, key) => {
             const column = line[key as keyof ColumnReduxStructure] as Item
-            if (typeTable === key) {
+            if (typeTable === key  && column.id) {
                 accumulator.id = column.id
             }
-            // console.log(`${typeTable}: ${column.typeColumn}`)
-            console.log(typeTable)
-
-
             if (typeTable === key) {
                 accumulator.value = separateString(column.value, ':', 1)
             } else if (typeTable !== column.typeColumn && typeof Number(separateString(column.value, ':', 0)) === "number" && NameToTableId[key] !== undefined) {
                 const keyBlock = NameToTableId[key] as "dependencyId";
                 if (keyBlock) {
-
                     accumulator[keyBlock] = column.id
                     // || Number(separateString(column.value, ':', 0))
                 }

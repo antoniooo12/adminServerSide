@@ -1,12 +1,14 @@
 import {DataTypes, ModelDefined} from "sequelize";
 import {db} from "../../dbSequelize";
 import {
+    ClientOrdersAttributes,
+    ClientOrdersCreationAttributes,
     OrderAdditionalInformationAttributes,
     OrderAdditionalInformationCreationAttributes,
     OrderAttributes,
     OrderCreationAttributes,
     OrderedGoodAttributes,
-    OrderedGoodCreationAttributes, TimeFrameAttributes, TimeFrameCreationAttributes
+    OrderedGoodCreationAttributes
 } from "../../../types/database/models/Orders/OrderType";
 
 export const OrderedGood:
@@ -29,6 +31,8 @@ export const OrderAdditionalInformation:
         id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
         status: {type: DataTypes.STRING},
         sum: {type: DataTypes.DECIMAL(10, 2)},
+        deliverFrom: {type: DataTypes.DATE},
+        deliverTo: {type: DataTypes.DATE},
     }, {
         tableName: 'OrderAdditionalInformation',
         charset: 'utf8',
@@ -36,23 +40,22 @@ export const OrderAdditionalInformation:
 
     })
 
-export const TimeFrame :
-    ModelDefined<TimeFrameAttributes, TimeFrameCreationAttributes> = db.define(
-        'TimeFrame',
-{
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        unique: true,
-        primaryKey: true,
-    },
-    deliverFrom: DataTypes.DATE,
-    deliverTo: DataTypes.DATE,
-},{
-        tableName: 'TimeFrame',
 
-    }
-)
+
+export const ClientOrders:
+    ModelDefined<ClientOrdersAttributes, ClientOrdersCreationAttributes> = db.define(
+    'ClientOrders',
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            unique: true,
+            primaryKey: true,
+        }
+    }, {
+        timestamps: true,
+        tableName: 'ClientOrders',
+    })
 
 export const Order:
     ModelDefined<OrderAttributes, OrderCreationAttributes> = db.define(
@@ -65,6 +68,6 @@ export const Order:
             primaryKey: true,
         }
     }, {
-        timestamps: true,
         tableName: 'Order',
-    })
+    }
+)

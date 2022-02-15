@@ -1,4 +1,5 @@
 import {TypeOrderTable} from "./Order";
+import {ColumnReduxStructure} from "../services/database/helpers";
 
 export const DataEntitiesCatalog = {
     Product: 'продукти',
@@ -26,6 +27,11 @@ export const DataColumn = {
 }
 export type TypeColumnId = keyof typeof ColumnId
 
+export type ResWebTable= {
+    newToServer: ColumnReduxStructure[]
+    allToUpdate: ColumnReduxStructure[]
+    allToDelete: (string | number)[]
+}
 
 export interface RowItem {
     id: number | string,

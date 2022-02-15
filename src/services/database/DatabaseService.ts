@@ -4,9 +4,6 @@ import {IncludeOptions, ModelDefined} from "sequelize";
 import {TableAttributes, TableCreationAttributes} from "../../types/database/models/Table";
 import {TableCreatorMokData} from "../../mokData";
 import {Line, parseObject1} from "./helpers";
-import {Order, OrderAdditionalInformation, OrderedGood} from "../../db/model/Orders/Order";
-import {Product} from "../../db/model/Goods/Product";
-import {Client} from "../../db/model/Orders/Client";
 
 
 class DatabaseService {
@@ -28,27 +25,7 @@ class DatabaseService {
         return toApp
     }
 
-    async getOrders() {
-        return await Order.findAll({
-                nest: true,
-                subQuery: true,
-                include: [{
-                    as: 'OrderedGood',
-                    model: OrderedGood,
-                    include: [{
-                        model: Product,
-                        as: 'Product',
-                    }]
-                }, {
-                    model: Client,
-                    as: 'Client',
-                },{
-                    model: OrderAdditionalInformation,
-                    // as: 'OrderAdditionalInformation',
-                }]
-            }
-        )
-    }
+
 }
 
 export const databaseService = new DatabaseService()
