@@ -1,5 +1,7 @@
-import {Item, TypeColumn} from "../types/TableTypes";
+import {Item, TypeColumn, TypeTable} from "../types/TableTypes";
 import {dependentsIdMok} from "../mokData";
+import {Model, ModelDefined} from "sequelize";
+import {TableAttributes, TableAttributesNested, TableCreationAttributes} from "../types/database/models/Table";
 
 const _ = require('lodash');
 
@@ -10,6 +12,7 @@ export const capitalize = (s: string) => s && s[0].toUpperCase() + s.slice(1)
 export function parseObject(rowDb: any, nameColumn: any) {
     let counter = 0
     let object = {}
+
     aFNTest(rowDb, nameColumn)
 
     function aFNTest(rowDb: any, nameColumn: any) {
@@ -48,6 +51,6 @@ export function parseObject(rowDb: any, nameColumn: any) {
     }, [])
 
 
-    console.log(typeof parsedRowsArr)
     return parsedRowsArr
 }
+

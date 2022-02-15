@@ -20,7 +20,7 @@ export interface ProductCreationAttributes extends Optional<ProductAttributes, "
 export type SubcategoryAttributes = {
     id: number
     value: string
-    CategoryId: number
+    CategoryId?: number
 }
 
 export interface SubcategoryCreationAttributes extends Optional<SubcategoryAttributes, "id"> {
@@ -43,8 +43,8 @@ export interface TypeOfProductCreationAttributes extends Optional<TypeOfProductA
 }
 
 type FrontendSpecific = {
-    typeColumn: TypeColumn
-    dependencyId: number
+    typeColumn?: TypeColumn
+    dependencyId?: number
 }
 
 export type GoodsAttributes = ProductAttributes &
@@ -52,14 +52,16 @@ export type GoodsAttributes = ProductAttributes &
     CategoryAttributes &
     TypeOfProductAttributes &
     FrontendSpecific
-// export type GoodsAttributes1 = ProductAttributes |
-//     SubcategoryAttributes |
-//     CategoryAttributes |
-//     TypeOfProductAttributes |
-//     FrontendSpecific
 
+
+export type GoodsAttributesOr = ProductAttributes |
+    SubcategoryAttributes |
+    CategoryAttributes |
+    TypeOfProductAttributes |
+    FrontendSpecific
 export type  GoodsCreationAttributes = ProductCreationAttributes &
     SubcategoryCreationAttributes &
     CategoryCreationAttributes &
     TypeOfProductCreationAttributes &
     FrontendSpecific
+

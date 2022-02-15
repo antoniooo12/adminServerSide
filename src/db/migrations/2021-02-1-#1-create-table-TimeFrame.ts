@@ -1,14 +1,15 @@
 import {DataTypes, QueryInterface} from "sequelize";
 
 async function up(queryInterface: QueryInterface) {
-    await queryInterface.createTable('TypeOfProduct', {
+    await queryInterface.createTable('TimeFrame', {
         id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
-        value: {type: DataTypes.STRING, unique: true, allowNull: false}
-    });
+        deliverFrom: DataTypes.DATE,
+        deliverTo: DataTypes.DATE,
+    }, {});
 }
 
 async function down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('TypeOfProduct');
+    await queryInterface.dropTable('TimeFrame');
 }
 
 module.exports = {up, down}

@@ -1,0 +1,353 @@
+[
+  [
+    {
+      "typeColumn": "Product",
+      "id": 1,
+      "value": "Геркулес 200грам",
+      "actual": true,
+      "price": 21,
+      "priority": 2,
+      "dependencyId": {
+        "SubcategoryId": 1,
+        "TypeOfProductId": 1
+      }
+    },
+    {
+      "typeColumn": "TypeOfProduct",
+      "id": 1,
+      "value": "Упаковка"
+    },
+    {
+      "typeColumn": "Subcategory",
+      "id": 1,
+      "value": "крупи",
+      "dependencyId": {
+        "CategoryId": 1
+      }
+    },
+    {
+      "typeColumn": "Category",
+      "id": 1,
+      "value": "бакалея"
+    }
+  ],
+  [
+    {
+      "typeColumn": "Product",
+      "id": 12,
+      "value": "Красивий",
+      "actual": true,
+      "price": 20,
+      "priority": 3,
+      "dependencyId": {
+        "SubcategoryId": 5,
+        "TypeOfProductId": 5
+      }
+    },
+    {
+      "typeColumn": "TypeOfProduct",
+      "id": 2,
+      "value": "кілограм"
+    },
+    {
+      "typeColumn": "Subcategory",
+      "id": 5,
+      "value": "Помідор",
+      "dependencyId": {
+        "CategoryId": 4
+      }
+    },
+    {
+      "typeColumn": "Category",
+      "id": 4,
+      "value": "овочі"
+    }
+  ],
+  [
+    {
+      "typeColumn": "Product",
+      "id": 10,
+      "value": "чорний принц",
+      "actual": true,
+      "price": 4,
+      "priority": 1,
+      "dependencyId": {
+        "SubcategoryId": 5,
+        "TypeOfProductId": 5
+      }
+    },
+    {
+      "typeColumn": "TypeOfProduct",
+      "id": 2,
+      "value": "кілограм"
+    },
+    {
+      "typeColumn": "Subcategory",
+      "id": 5,
+      "value": "Помідор",
+      "dependencyId": {
+        "CategoryId": 4
+      }
+    },
+    {
+      "typeColumn": "Category",
+      "id": 4,
+      "value": "овочі"
+    }
+  ],
+  [
+    {
+      "typeColumn": "Product",
+      "id": 11,
+      "value": "Квас тарас 1,5л",
+      "actual": true,
+      "price": 8,
+      "priority": 4,
+      "dependencyId": {
+        "SubcategoryId": 2,
+        "TypeOfProductId": 2
+      }
+    },
+    {
+      "typeColumn": "TypeOfProduct",
+      "id": 3,
+      "value": "бутилка"
+    },
+    {
+      "typeColumn": "Subcategory",
+      "id": 2,
+      "value": "Газіровка",
+      "dependencyId": {
+        "CategoryId": 2
+      }
+    },
+    {
+      "typeColumn": "Category",
+      "id": 2,
+      "value": "Напої"
+    }
+  ],
+  [
+    {
+      "typeColumn": "Product",
+      "id": 13,
+      "value": "Кола 1,5л",
+      "actual": true,
+      "price": 18,
+      "priority": 3,
+      "dependencyId": {
+        "SubcategoryId": 2,
+        "TypeOfProductId": 2
+      }
+    },
+    {
+      "typeColumn": "TypeOfProduct",
+      "id": 3,
+      "value": "бутилка"
+    },
+    {
+      "typeColumn": "Subcategory",
+      "id": 2,
+      "value": "Газіровка",
+      "dependencyId": {
+        "CategoryId": 2
+      }
+    },
+    {
+      "typeColumn": "Category",
+      "id": 2,
+      "value": "Напої"
+    }
+  ]
+  [
+    {
+      "columns": {
+        "Product": {
+          "id": 1,
+          "value": "Геркулес 200грам"
+        },
+        "actual": {
+          "typeColumn": "actual",
+          "value": true
+        },
+        "price": {
+          "typeColumn": "price",
+          "value": "21.00"
+        },
+        "priority": {
+          "typeColumn": "priority",
+          "value": "2"
+        },
+        "image": {
+          "typeColumn": "image",
+          "value": ""
+        },
+        "TypeOfProduct": {
+          "id": 1,
+          "value": "Упаковка"
+        },
+        "Subcategory": {
+          "id": 1,
+          "value": "крупи",
+          "dependencyId": {
+            "id": 1,
+            "value": "крупи"
+          }
+        }
+      },
+      "id": 1
+    },
+    {
+      "columns": {
+        "Product": {
+          "id": 12,
+          "value": "Красивий"
+        },
+        "actual": {
+          "typeColumn": "actual",
+          "value": true
+        },
+        "price": {
+          "typeColumn": "price",
+          "value": "20.00"
+        },
+        "priority": {
+          "typeColumn": "priority",
+          "value": "3"
+        },
+        "image": {
+          "typeColumn": "image",
+          "value": ""
+        },
+        "TypeOfProduct": {
+          "id": 2,
+          "value": "кілограм"
+        },
+        "Subcategory": {
+          "id": 5,
+          "value": "Помідор",
+          "dependencyId": {
+            "id": 5,
+            "value": "Помідор"
+          }
+        }
+      },
+      "id": 12
+    },
+    {
+      "columns": {
+        "Product": {
+          "id": 10,
+          "value": "чорний принц"
+        },
+        "actual": {
+          "typeColumn": "actual",
+          "value": true
+        },
+        "price": {
+          "typeColumn": "price",
+          "value": "4.00"
+        },
+        "priority": {
+          "typeColumn": "priority",
+          "value": "1"
+        },
+        "image": {
+          "typeColumn": "image",
+          "value": ""
+        },
+        "TypeOfProduct": {
+          "id": 2,
+          "value": "кілограм"
+        },
+        "Subcategory": {
+          "id": 5,
+          "value": "Помідор",
+          "dependencyId": {
+            "id": 5,
+            "value": "Помідор"
+          }
+        }
+      },
+      "id": 10
+    },
+    {
+      "columns": {
+        "Product": {
+          "id": 11,
+          "value": "Квас тарас 1,5л"
+        },
+        "actual": {
+          "typeColumn": "actual",
+          "value": true
+        },
+        "price": {
+          "typeColumn": "price",
+          "value": "8.00"
+        },
+        "priority": {
+          "typeColumn": "priority",
+          "value": "4"
+        },
+        "image": {
+          "typeColumn": "image",
+          "value": ""
+        },
+        "TypeOfProduct": {
+          "id": 3,
+          "value": "бутилка"
+        },
+        "Subcategory": {
+          "id": 2,
+          "value": "Газіровка",
+          "dependencyId": {
+            "id": 2,
+            "value": "Газіровка"
+          }
+        }
+      },
+      "id": 11
+    },
+    {
+      "columns": {
+        "Product": {
+          "id": 13,
+          "value": "Кола 1,5л"
+        },
+        "actual": {
+          "typeColumn": "actual",
+          "value": true
+        },
+        "price": {
+          "typeColumn": "price",
+          "value": "18.00"
+        },
+        "priority": {
+          "typeColumn": "priority",
+          "value": "3"
+        },
+        "image": {
+          "typeColumn": "image",
+          "value": ""
+        },
+        "TypeOfProduct": {
+          "id": 3,
+          "value": "бутилка"
+        },
+        "Subcategory": {
+          "id": 2,
+          "value": "Газіровка",
+          "dependencyId": {
+            "id": 2,
+            "value": "Газіровка"
+          }
+        }
+      },
+      "id": 13
+    }
+  ]
+]
+
+
+
+//[{"id":1,"value":"Геркулес 200грам","actual":true,"price":"21.00","priority":"2","image":"","TypeOfProductId":1,"SubcategoryId":1,"TypeOfProduct":{"id":1,"value":"Упаковка"},"Subcategory":{"id":1,"value":"крупи","CategoryId":1,"Category":{"id":1,"value":"бакалея"}}},{"id":12,"value":"Красивий","actual":true,"price":"20.00","priority":"3","image":"","TypeOfProductId":2,"SubcategoryId":5,"TypeOfProduct":{"id":2,"value":"кілограм"},"Subcategory":{"id":5,"value":"Помідор","CategoryId":4,"Category":{"id":4,"value":"овочі"}}},{"id":10,"value":"чорний принц","actual":true,"price":"4.00","priority":"1","image":"","TypeOfProductId":2,"SubcategoryId":5,"TypeOfProduct":{"id":2,"value":"кілограм"},"Subcategory":{"id":5,"value":"Помідор","CategoryId":4,"Category":{"id":4,"value":"овочі"}}},{"id":11,"value":"Квас тарас 1,5л","actual":true,"price":"8.00","priority":"4","image":"","TypeOfProductId":3,"SubcategoryId":2,"TypeOfProduct":{"id":3,"value":"бутилка"},"Subcategory":{"id":2,"value":"Газіровка","CategoryId":2,"Category":{"id":2,"value":"Напої"}}},{"id":13,"value":"Кола 1,5л","actual":true,"price":"18.00","priority":"3","image":"","TypeOfProductId":3,"SubcategoryId":2,"TypeOfProduct":{"id":3,"value":"бутилка"},"Subcategory":{"id":2,"value":"Газіровка","CategoryId":2,"Category":{"id":2,"value":"Напої"}}}]

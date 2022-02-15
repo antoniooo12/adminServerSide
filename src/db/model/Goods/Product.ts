@@ -6,7 +6,7 @@ export const Product: ModelDefined<ProductAttributes, ProductCreationAttributes>
     'Product',
     {
         id: {type: DataTypes.INTEGER, primaryKey: true, unique: true, autoIncrement: true},
-        value: {type: DataTypes.STRING, unique: true},
+        value: {type: DataTypes.STRING},
         actual: {type: DataTypes.BOOLEAN, defaultValue: false},
         price: {type: DataTypes.DECIMAL(10, 2)},
         priority: {type: DataTypes.DECIMAL(10, 0)},

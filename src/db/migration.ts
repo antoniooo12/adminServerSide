@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 import sequelize, {DataTypes} from 'sequelize';
 import Migration from './model/_Migration';
